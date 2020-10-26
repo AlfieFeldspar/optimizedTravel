@@ -8,6 +8,7 @@ app.use(cors());
 
 app.use(express.static('public'));
 app.use(express.static('node_modules'));
+
 // "api" as the prefix to all routes is set here
 app.use('/api/', allRoutes);
 
@@ -26,5 +27,6 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port ${port}`);
 });
