@@ -1,74 +1,85 @@
 // const { response } = require('express');
-const express = require("express");
+const express = require('express');
 
 const router = express.Router();
 
 // connecting to local or served mysql database
-const mysql = require("mysql");
+const mysql = require('mysql');
 
 let pool;
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV === 'production') {
   pool = mysql.createPool(process.env.CLEARDB_DATABASE_URL);
 } else {
   pool = mysql.createPool({
     connectionLimit: 10,
-    host: "localhost",
-    user: "aissa",
-    password: "cohortx",
-    database: "slack-project.sql",
+    host: 'localhost',
+    user: 'aissa',
+    password: 'cohortx',
+    database: 'homeHealthAgency',
   });
   // eslint-disable-next-line no-console
-  console.log("end of pool");
+  console.log('end of pool');
 }
 
 // essentially a route for testing
-router.get("/", (request, response, next) => {
-  response.send("hello from api root!");
+router.get('/', (request, response, next) => {
+  response.send('hello from api root!');
 });
 
 // endpoint for users logging in. Adds user to DB, returns
 // newUser w/ {Id, name, active} to front end
-router.post("/login", (request, response, next) => {
-  // Create a new user and add them to database
-  if (!request.body.username) {
-    // eslint-disable-next-line no-console
-    console.log("Please add a username");
-  }
+// router.post("/login", (request, response, next) => {
+//   // Create a new user and add them to database
+//   if (!request.body.username) {
+//     // eslint-disable-next-line no-console
+//     console.log("Please add a username");
+//   }
 
-  const newUser = {
-    user_Id: Math.floor(Math.random() * 50000),
-    name: request.body.username,
-    active: 1,
-  };
+//   const newUser = {
+//     user_Id: Math.floor(Math.random() * 50000),
+//     name: request.body.username,
+//     active: 1,
+//   };
+//   // Query the pool
+// //   pool.query(
+//     "insert into users (user_Id, username, active, timestamp) values (?, ?, ?, CURRENT_TIMESTAMP)",
+//     [newUser.user_Id, newUser.name, newUser.active],
+//     (error, results, fields) => {
+//       if (error) throw error;
+//       pool.query(
+//         "select user_Id, username, active, timestamp from users where user_Id = ?",
+//         newUser.user_Id,
+//         (error, results, fields) => {
+//           if (error) throw error;
+//           response.send(results[0]);
+//         }
+//       );
+//     }
+//   );
+// });
+
+// endpoint for grabbing all patients
+router.get('/patients', (request, response, next) => {
   // Query the pool
-  pool.query(
-    "insert into users (user_Id, username, active, timestamp) values (?, ?, ?, CURRENT_TIMESTAMP)",
-    [newUser.user_Id, newUser.name, newUser.active],
-    (error, results, fields) => {
-      if (error) throw error;
-      pool.query(
-        "select user_Id, username, active, timestamp from users where user_Id = ?",
-        newUser.user_Id,
-        (error, results, fields) => {
-          if (error) throw error;
-          response.send(results[0]);
-        }
-      );
-    }
-  );
+  pool.query('select * from ptTable', (error, results, fields) => {
+    // Handle error after the release.
+    if (error) throw error;
+    // send newUser to front end
+    response.send(results);
+  });
 });
 
-// endpoint for grabbing all users to populate left hand list
-// router.get('/users', (request, response, next) => {
-//   // Query the pool
-//   pool.query('select * from users', (error, results, fields) => {
-//     // Handle error after the release.
-//     if (error) throw error;
-//     // send newUser to front end
-//     response.send(results);
-//   });
-// });
+// endpoint for grabbing all nurses with their assigned patients
+router.get('/nurses/:nurse', (request, response, next) => {
+  // Query the pool
+  pool.query('SELECT rnTable.rnFirstName, rnTable.rnLastName, rnTable.rnHomeLng, rnTable.rnHomeLat, ptTable.ptFirstName, ptTable.ptLastname, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed FROM rnTable INNER JOIN ptTable ON rnTable.rn_Id=ptTable.rn_Id WHERE rnTable.rn_Id = ?', request.params.nurse, (error, results, fields) => {
+    // Handle error after the release.
+    if (error) throw error;
+    // send nurse info and pt list to front end
+    response.send(results);
+  });
+});
 
 // //
 // // endpoint for users logging out. Changes user's active status back to 0 in db
