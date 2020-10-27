@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>ContentFilters</key>
+	<dict/>
+	<key>auto_connect</key>
+	<true/>
+	<key>data</key>
+	<dict>
+		<key>connection</key>
+		<dict>
+			<key>database</key>
+			<string>homeHealthAgency</string>
+			<key>host</key>
+			<string>localhost</string>
+			<key>name</key>
+			<string>localhost</string>
+			<key>rdbms_type</key>
+			<string>mysql</string>
+			<key>sslCACertFileLocation</key>
+			<string></string>
+			<key>sslCACertFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslCertificateFileLocation</key>
+			<string></string>
+			<key>sslCertificateFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>sslKeyFileLocation</key>
+			<string></string>
+			<key>sslKeyFileLocationEnabled</key>
+			<integer>0</integer>
+			<key>type</key>
+			<string>SPSocketConnection</string>
+			<key>useSSL</key>
+			<integer>0</integer>
+			<key>user</key>
+			<string>aissa</string>
+		</dict>
+		<key>session</key>
+		<dict>
+			<key>connectionEncoding</key>
+			<string>latin1</string>
+			<key>contentFilter</key>
+			<dict/>
+			<key>contentPageNumber</key>
+			<integer>1</integer>
+			<key>contentSelection</key>
+			<data>
+			YnBsaXN0MDDUAQIDBAUGBwpYJHZlcnNpb25ZJGFyY2hpdmVyVCR0
+			b3BYJG9iamVjdHMSAAGGoF8QD05TS2V5ZWRBcmNoaXZlctEICVRk
+			YXRhgAGvEA8LDBkaGxwdIyQlLDA0OT5VJG51bGzTDQ4PEBQYV05T
+			LmtleXNaTlMub2JqZWN0c1YkY2xhc3OjERITgAKAA4AEoxUWF4AF
+			gAaACoAOVHR5cGVUcm93c1RrZXlzXxAmU2VsZWN0aW9uRGV0YWls
+			VHlwZVByaW1hcnlLZXllZERldGFpbHPTDQ4PHiAioR+AB6EhgAiA
+			CVEzCdImJygpWiRjbGFzc25hbWVYJGNsYXNzZXNfEBNOU011dGFi
+			bGVEaWN0aW9uYXJ5oygqK1xOU0RpY3Rpb25hcnlYTlNPYmplY3TS
+			Dg8tL6EugAuADdIPMTIzWU5TLnN0cmluZ4AMVXB0X2lk0iYnNTZf
+			EA9OU011dGFibGVTdHJpbmejNTc4WE5TU3RyaW5nWE5TT2JqZWN0
+			0iYnOjteTlNNdXRhYmxlQXJyYXmjOjw9V05TQXJyYXlYTlNPYmpl
+			Y3TSJicqP6IqQFhOU09iamVjdAAIABEAGgAkACkAMgA3AEkATABR
+			AFMAZQBrAHIAegCFAIwAkACSAJQAlgCaAJwAngCgAKIApwCsALEA
+			2gDhAOMA5QDnAOkA6wDtAO4A8wD+AQcBHQEhAS4BNwE8AT4BQAFC
+			AUcBUQFTAVkBXgFwAXQBfQGGAYsBmgGeAaYBrwG0AbcAAAAAAAAC
+			AQAAAAAAAABBAAAAAAAAAAAAAAAAAAABwA==
+			</data>
+			<key>contentSortColIsAsc</key>
+			<true/>
+			<key>contentViewport</key>
+			<string>{{1, 0}, {1070, 404}}</string>
+			<key>isToolbarVisible</key>
+			<true/>
+			<key>queries</key>
+			<string>ALTER TABLE ptTable ADD CONSTRAINT rn_Id FOREIGN KEY (`rn_id`) references rnTable ('rn_Id');
+
+</string>
+			<key>table</key>
+			<string>ptTable</string>
+			<key>view</key>
+			<string>SP_VIEW_CONTENT</string>
+			<key>windowVerticalDividerPosition</key>
+			<real>214</real>
+		</dict>
+	</dict>
+	<key>encrypted</key>
+	<false/>
+	<key>format</key>
+	<string>connection</string>
+	<key>queryFavorites</key>
+	<array/>
+	<key>queryHistory</key>
+	<array>
+		<string>ALTER TABLE ptTable ADD CONSTRAINT rn_Id FOREIGN KEY (`rn_id`) references rnTable ('rn_Id')</string>
+	</array>
+	<key>rdbms_type</key>
+	<string>mysql</string>
+	<key>rdbms_version</key>
+	<string>5.7.29</string>
+	<key>version</key>
+	<integer>1</integer>
+</dict>
+</plist>

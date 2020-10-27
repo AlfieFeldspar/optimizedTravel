@@ -25,10 +25,14 @@ TODO
     * [x] started & running
     * [x] reduxify app
     * [x] split Map from App components
+    * [x] parsed response data for point display
 
 * [] Front end Mapbox
     * [x] Working Map w/ token (component passed to App.js)
+    * [x] Pt locations for a nurse displayed on map!!
+    * [] Change color of icon if high priority
+    * [] Dynamically add start point for RN (home or office)
 
 * [] Front end actions/reducers
-    * [] actions: FETCH ptPoints from API - list of pts for nurse to display on map
+    * [x] actions: FETCH ptPoints from API - list of pts for nurse to display on map
     * [] action: FETCH nurse id from name on startup. Modal?    
