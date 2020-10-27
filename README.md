@@ -19,4 +19,14 @@ TODO
     * [x] Route to a root
     * [X] Route to GET all patients
     * [x] Route to GET pts by RN_ID
+    * [] Other routes as needed
+
+* [x] Front end React
+    * [x] started!
+    * [] FETCH from API - list of pts for nurse to display on map
+
+* [] Front end Mapbox
+    * [x] Working App.js w/ token
+
+* [] Front end routing
     

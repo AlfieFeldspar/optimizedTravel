@@ -1,5 +1,6 @@
 // const { response } = require('express');
 const express = require('express');
+require('dotenv').config({path: '../server/.env'});
 
 const router = express.Router();
 
@@ -13,9 +14,9 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   pool = mysql.createPool({
     connectionLimit: 10,
-    host: 'localhost',
-    user: 'aissa',
-    password: 'cohortx',
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
     database: 'homeHealthAgency',
   });
   // eslint-disable-next-line no-console
