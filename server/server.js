@@ -1,5 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+require('dotenv').config();
+// eslint-disable-next-line no-console
+console.log(`the process.env token in server = ${process.env.REACT_MAPBOX_TOKEN}`);
 
 const app = express();
 const allRoutes = require('./routes/allRoutes');

@@ -15,18 +15,20 @@ TODO
     * [x] Generate set of at least 6 fake patients
     * [x] Generate at least one fake nurse   
 
-* [] Set up routing
+* [] Set up backend endpoints
     * [x] Route to a root
     * [X] Route to GET all patients
     * [x] Route to GET pts by RN_ID
     * [] Other routes as needed
 
-* [x] Front end React
-    * [x] started!
-    * [] FETCH from API - list of pts for nurse to display on map
+* [x] Front end React/Redux
+    * [x] started & running
+    * [x] reduxify app
+    * [x] split Map from App components
 
 * [] Front end Mapbox
-    * [x] Working App.js w/ token
+    * [x] Working Map w/ token (component passed to App.js)
 
-* [] Front end routing
-    
+* [] Front end actions/reducers
+    * [] actions: FETCH ptPoints from API - list of pts for nurse to display on map
+    * [] action: FETCH nurse id from name on startup. Modal?    
