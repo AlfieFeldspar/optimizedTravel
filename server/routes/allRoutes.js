@@ -85,7 +85,7 @@ router.get("/patients", (request, response, next) => {
 router.get("/patients/:nurse", (request, response, next) => {
   // Query the pool
   pool.query(
-    "SELECT ptTable.pt_Id, ptTable.ptFirstName, ptTable.ptLastName, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority FROM ptTable INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ?",
+    "SELECT ptTable.pt_Id, ptTable.ptFirstName, ptTable.ptLastName, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority FROM ptTable INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
     request.params.nurse,
     (error, results, fields) => {
       // Handle error after the release.
