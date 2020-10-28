@@ -14,6 +14,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      startingRNCoords: {},
       data: {},
       viewport: {
         latitude: 35.908141,
@@ -38,6 +39,7 @@ class Map extends Component {
       container.Lat = item.ptHomeLat;
       return container;
     });
+
     this.setState({ data: ptCoords }, function () {});
     return ptCoords;
   }
@@ -52,18 +54,18 @@ class Map extends Component {
         mapboxApiAccessToken={mapboxToken}
       >
         {ptCoords.map((entry) => (
-          <Marker 
-            key={entry._id} 
-            latitude={entry.Lat} 
+          <Marker
+            key={entry._id}
+            latitude={entry.Lat}
             longitude={entry.Lng}
             offsetLeft={-12}
             offsetTop={-24}
-            >
+          >
             <svg
               className="marker"
               style={{
-                  width: '24px',
-                  height: '24px'
+                width: "24px",
+                height: "24px",
               }}
               viewBox="0 0 24 24"
               stroke-width="3"
@@ -81,37 +83,11 @@ class Map extends Component {
   }
 }
 
-// {/* const CITIES = [...];
-
-// // PureComponent ensures that the markers are only rerendered when data changes
-// class Markers extends PureComponent {
-//   render() {
-//     const {data} = this.props;
-//     return data.map(
-//       city => <Marker key={city.name} longitude={city.longitude} latitude={city.latitude} ><img src="pin.png" /></Marker>
-//       )
-//     }
-//   } */}
-
-// {/* class Map extends PureComponent {
-//   state = {
-//     viewport: {
-//       latitude: 37.78,
-//       longitude: -122.41,
-//       zoom: 8
-//     }
-//   };
-
-//   render() {
-//     return (
-//       <ReactMapGL {...this.state.viewport} onViewportChange={viewport => this.setState({viewport})}>
-//       <Markers data={CITIES} />
-//       </ReactMapGL>
-//       );
-//     }
-//     //  onViewportChange={nextViewport => setViewport(nextViewport)}
-// } */}
-function mapStateToProps(state) {}
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+  };
+}
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchPatientPoints }, dispatch);
