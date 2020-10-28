@@ -24,8 +24,9 @@ TODO
 
 * [] Set up backend endpoints
     * [x] Route to a root
-    * [X] Route to GET all patients
-    * [x] Route to GET pts by RN_ID
+    * [X] GET all patients (for manager)
+    * [x] GET pts by RN_ID
+    * [] POST to pts to change visitPriority
     * [] Other routes as needed
 
 * [x] Front end React/Redux
@@ -43,8 +44,13 @@ TODO
 
 * [] Front end table of patients component
     * [x] skeletonize component
-    * [] Display list of patients
-    * [] Radio button to change priority
+    * [x] Display list of patients
+    * [] In-table radio button to change priority
+        * [] POST endpt backend build, 
+        * [] front end ACTION
+        * [] Add radio button
+        * [] Add onChange/onClick handler
+
 
 * [] Front end RN nav bar 
     * [] AT LEAST display app name

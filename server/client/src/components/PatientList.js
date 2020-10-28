@@ -34,7 +34,7 @@ class PatientList extends Component {
   render() {
     console.log(this.state.data);
     return (
-      <table class="table">
+      <table className="patient-table table-striped">
         <thead>
           <tr>
             <th scope="col">Name</th>
