@@ -6,6 +6,11 @@ TODO
     * [x] RN: traveling around town on home health visits
     * [x] Nurse manager in the office watching the numbers
 
+* [x] Wireframes
+    * [x] Landing page for RN on mobile
+    * [x] Map page for RN on mobile
+    * [] Landing page for RN manager   
+
 * [x] Set up server
     * [x] Install dependencies
     * [x] Install & set up linter
@@ -29,16 +34,27 @@ TODO
     * [x] split Map from App components
     * [x] parsed response data for point display
 
-* [] Front end Mapbox
-    * [x] Working Map w/ token (component passed to App.js)
-    * [x] Pt locations for a nurse displayed on map!!
-    * [x] Pt size changes on zoom
-    * [x] Pt location fixed on zoom
-    * [] Change color of icon if high priority
-    * [] Dynamically add start point for RN (home or office)
+* [] Front end RN Mapbox map component (mobile)
+    * [x] Working map w/ token 
+    * [x] Patient point locations displayed on map!!
+    * [x] Point size changes on zoom
+    * [x] Point location fixed on zoom
+    * [] Change color of icon if high priority?
+
+* [] Front end table of patients component
+    * [x] skeletonize component
+    * [] Display list of patients
+    * [] Radio button to change priority
+
+* [] Front end RN nav bar 
+    * [] AT LEAST display app name
+    * [] Toggle 'Patients' and 'Navigate' to show/hide table and change map size
+
+* [] Front end RN launch page (mobile)
+    * [] Drop box for nurse's name to grab Id and filter patients
+    * [] Drop box to add start point for RN (home or office)
     * [] Dynamically change priority
     * [] Hover-over patient details
-    * [] Search box for nurse's name to grab Id and filter patients
     * [] First route from home or office to any top priority patients
         * [] Then route from that patient starting point to other spots
         * [] If no high priority patients, just route from home or office    

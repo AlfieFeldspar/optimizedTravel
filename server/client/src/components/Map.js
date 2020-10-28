@@ -14,14 +14,17 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startingRNCoords: {},
-      data: {},
+      startingRNCoords: {
+        latitude: 35.9285,
+        longitude: -78.9371
+      },
+      data: [],
       viewport: {
-        latitude: 35.908141,
-        longitude: -78.925461,
+        latitude: 35.989341,
+        longitude: -78.926232,
         zoom: 10,
         width: "100vw",
-        height: "100vh",
+        height: "50vh",
         display: "block",
       },
     };
@@ -32,6 +35,7 @@ class Map extends Component {
     const json = await response;
     ptCoords = json.payload.data.map((item) => {
       const container = {};
+      container.ptId = item.pt_Id;
       container.ptName = [item.ptFirstName, item.ptLastName].join(" ");
       container.nursingNeed = item.nursingNeed;
       container.visitPriority = item.visitPriority;
@@ -53,11 +57,11 @@ class Map extends Component {
         mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
         mapboxApiAccessToken={mapboxToken}
       >
-        {ptCoords.map((entry) => (
+        {ptCoords.map((patient) => (
           <Marker
-            key={entry._id}
-            latitude={entry.Lat}
-            longitude={entry.Lng}
+            key={patient._id}
+            latitude={patient.Lat}
+            longitude={patient.Lng}
             offsetLeft={-12}
             offsetTop={-24}
           >
