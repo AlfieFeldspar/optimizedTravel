@@ -45,13 +45,13 @@ class PatientList extends Component {
         <tbody>
           {ptData.map((patient) => (
             <tr className="row-sm-1 patient-row" key={patient._id}>
-              <th scope="col" className="col patient-name">
+              <th scope="col" className="col-sm-2 patient-name">
                 {patient.ptName}
               </th>
-              <th scope="col" className="col visit-reason">
+              <th scope="col" className="col-sm-6 visit-reason">
                 {patient.nursingNeed}
               </th>
-              <th scope="col" className="col visit-priority">
+              <th scope="col" className="col-sm-4 visit-priority">
                 {patient.visitPriority}
               </th>
             </tr>

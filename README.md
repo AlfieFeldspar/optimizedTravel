@@ -53,14 +53,14 @@ TODO
 
 
 * [] Front end RN nav bar 
-    * [] AT LEAST display app name
-    * [] Toggle 'Patients' and 'Navigate' to show/hide table and change map size
+    * [x] AT LEAST display app name
+    * [x] Add 'navigate' button
+    * [] Toggle 'Patients' and 'Navigate' to show/hide table, change map size, trigger API call
 
 * [] Front end RN launch page (mobile)
     * [] Drop box for nurse's name to grab Id and filter patients
     * [] Drop box to add start point for RN (home or office)
     * [] Dynamically change priority
-    * [] Hover-over patient details
     * [] First route from home or office to any top priority patients
         * [] Then route from that patient starting point to other spots
         * [] If no high priority patients, just route from home or office    

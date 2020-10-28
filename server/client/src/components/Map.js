@@ -15,8 +15,8 @@ class Map extends Component {
     super(props);
     this.state = {
       startingRNCoords: {
-        latitude: 35.9285,
-        longitude: -78.9371
+        lat: 35.9285,
+        lng: -78.9371,
       },
       data: [],
       viewport: {
@@ -48,41 +48,82 @@ class Map extends Component {
     return ptCoords;
   }
 
+  btnClickHandler = () => {
+    console.log("clicked!");
+  };
+
   render() {
     console.log(ptCoords);
     return (
-      <ReactMapGL
-        {...this.state.viewport}
-        onViewportChange={(viewport) => this.setState({ viewport })}
-        mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
-        mapboxApiAccessToken={mapboxToken}
-      >
-        {ptCoords.map((patient) => (
+      <>
+        <div>
+          <div className="map-title">Traveling Nurse Route Planner</div>
+          <button
+            class="btn btn-primary btn-sm map-button"
+            type="button"
+            onClick={this.btnClickHandler}
+          >
+            Route
+          </button>
+        </div>
+        <ReactMapGL
+          {...this.state.viewport}
+          onViewportChange={(viewport) => this.setState({ viewport })}
+          mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
+          mapboxApiAccessToken={mapboxToken}
+        >
+          {ptCoords.map((patient) => (
+            <Marker
+              key={patient._id}
+              latitude={patient.Lat}
+              longitude={patient.Lng}
+              offsetLeft={-12}
+              offsetTop={-24}
+            >
+              <svg
+                className="marker"
+                style={{
+                  width: "24px",
+                  height: "24px",
+                }}
+                viewBox="0 0 24 24"
+                stroke-width="3"
+                fill="none"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+            </Marker>
+          ))}
           <Marker
-            key={patient._id}
-            latitude={patient.Lat}
-            longitude={patient.Lng}
+            latitude={this.state.startingRNCoords.lat}
+            longitude={this.state.startingRNCoords.lng}
             offsetLeft={-12}
             offsetTop={-24}
           >
             <svg
-              className="marker"
+              className="feather feather-truck"
               style={{
-                width: "24px",
-                height: "24px",
+                width: "24",
+                height: "24",
               }}
               viewBox="0 0 24 24"
-              stroke-width="3"
               fill="none"
               stroke-linecap="round"
               stroke-linejoin="round"
+              stroke="#ff6600"
+              stroke-width="3"
             >
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
             </svg>
           </Marker>
-        ))}
-      </ReactMapGL>
+        </ReactMapGL>
+      </>
     );
   }
 }
