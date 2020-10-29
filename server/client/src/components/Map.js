@@ -82,11 +82,11 @@ class Map extends Component {
     prepCoordsForFirstLegOfRoute();
 
     // fetchOptimizedRoute(firstLegCoordsForNursingRoute);
-    // console.log('firstLeg ', firstLegCoordsForNursingRoute)
+    console.log('firstLeg ', firstLegCoordsForNursingRoute)
     
-      const responseRoute1 = this.props.fetchOptimizedRoute(firstLegCoordsForNursingRoute);
-      const json1 = responseRoute1;
-      console.log("json", json1.payload.data)
+      // const responseRoute1 = this.props.fetchOptimizedRoute(firstLegCoordsForNursingRoute);
+      // const json1 = responseRoute1;
+      // console.log("json", json1.payload.data)
       // firstLeg = json.payload.data.map((item) => {
       //   const container = {};
       //   container.ptId = item.pt_Id;
