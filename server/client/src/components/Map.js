@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ReactMapGL, { Marker } from "react-map-gl";
 
-import { fetchOptimizedRoute, fetchPatientPoints } from "../actions";
+import { fetchOptimizedRouteLeg1, fetchPatientPoints } from "../actions";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -18,8 +18,9 @@ class Map extends Component {
         lat: 35.9285,
         lng: -78.9371,
       },
-      data: [],
-      routes: [],
+      ptPointData: [],
+      routeLeg1: [],
+      routeLeg2: [],
       viewport: {
         latitude: 35.989341,
         longitude: -78.926232,
@@ -43,11 +44,9 @@ class Map extends Component {
       container.Lng = item.ptHomeLng;
       container.Lat = item.ptHomeLat;
       return container;
-
-      
     });
 
-    this.setState({ data: ptCoords }, function () {});
+    this.setState({ ptPointData: ptCoords }, function () {});
     return ptCoords;
   }
 
@@ -83,12 +82,13 @@ class Map extends Component {
     }
     prepCoordsForFirstLegOfRoute();
 
-    // fetchOptimizedRoute(firstLegCoordsForNursingRoute);
-    console.log('firstLeg ', firstLegCoordsForNursingRoute)
+    this.props.fetchOptimizedRouteLeg1(firstLegCoordsForNursingRoute);
+    this.setState({routeLeg1: this.props.routeLeg1});
     
-      // const responseRoute1 = this.props.fetchOptimizedRoute(firstLegCoordsForNursingRoute);
-      // const json1 = responseRoute1;
-      // console.log("json", json1.payload.data)
+  
+
+
+
       // firstLeg = json.payload.data.map((item) => {
       //   const container = {};
       //   container.ptId = item.pt_Id;
@@ -100,8 +100,7 @@ class Map extends Component {
       //   return container;
       // });
   
-      // this.setState({ data: firstLeg }, function () {});
-      // return firstLeg;
+      
 
     
 
@@ -188,13 +187,14 @@ class Map extends Component {
 
 function mapStateToProps(state) {
   return {
-    data: state.data,
-    routes: state.routes
+    ptPointData: state.ptPointData,
+    routeLeg1: state.routeLeg1,
+    routeLeg2: state.routeLeg2
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPatientPoints, fetchOptimizedRoute }, dispatch);
+  return bindActionCreators({ fetchPatientPoints, fetchOptimizedRouteLeg1 }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);

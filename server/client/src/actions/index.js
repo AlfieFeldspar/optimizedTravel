@@ -1,7 +1,8 @@
 import axios from 'axios';
 
 export const FETCH_PATIENT_POINTS = 'FETCH_PATIENT_POINTS ';
-export const FETCH_OPTIMIZED_ROUTE = 'FETCH_OPTIMIZED_ROUTE';
+export const FETCH_OPTIMIZED_ROUTE_LEG1 = 'FETCH_OPTIMIZED_ROUTE_LEG1';
+export const FETCH_OPTIMIZED_ROUTE_LEG2 = 'FETCH_OPTIMIZED_ROUTE_LEG2';
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -16,12 +17,20 @@ export function fetchPatientPoints(rn_Id) {
   };
 }
 
-export function fetchOptimizedRoute(coords) {
-  console.log("In actions to fetch route")
-  request = axios.get(`https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&access_token=${mapboxToken}`);
+export function fetchOptimizedRouteLeg1(coords) {
+  console.log("In actions to fetch route1")
+  request = axios.get(`https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`);
   return {
-    type: FETCH_OPTIMIZED_ROUTE,
+    type: FETCH_OPTIMIZED_ROUTE_LEG1,
     payload: request,
   };
 }
 
+export function fetchOptimizedRouteLeg2(coords) {
+  console.log("In actions to fetch route2")
+  request = axios.get(`https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`);
+  return {
+    type: FETCH_OPTIMIZED_ROUTE_LEG2,
+    payload: request,
+  };
+}
