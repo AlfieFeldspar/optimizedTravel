@@ -51,6 +51,17 @@ class PatientList extends Component {
               <th scope="col" className="cvisit-reason">
                 {patient.nursingNeed}
               </th>
+
+              {/* radio buttons here */}
+              {/* <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="0" checked>
+                    <label class="form-check-label" for="exampleRadios1">0</label>        
+                  </div>
+                  <div class="form-check">
+                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="1" checked>
+                    <label class="form-check-label" for="exampleRadios1">1</label>        
+                  </div>*/}
+
               <th scope="col" className="visit-priority">
                 {patient.visitPriority}
               </th>

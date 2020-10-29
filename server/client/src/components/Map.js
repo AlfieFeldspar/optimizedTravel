@@ -43,6 +43,8 @@ class Map extends Component {
       container.Lng = item.ptHomeLng;
       container.Lat = item.ptHomeLat;
       return container;
+
+      
     });
 
     this.setState({ data: ptCoords }, function () {});
