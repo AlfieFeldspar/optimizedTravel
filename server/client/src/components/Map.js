@@ -221,12 +221,12 @@ class Map extends Component {
           </Marker>
 
           {/* only want to show on button click */}
-           this.props.geometry.coordinates ? (
+           {/* this.props.geometry.coordinates ? (
           {(
             <Source type="geojson" data={this.props.geometry.coordinates }>
               <Layer {...lineLayer} />
             </Source>
-          )}) : null;
+          )}) : null; */}
 
         </ReactMapGL>
       </>
