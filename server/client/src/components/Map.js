@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
 
-import { fetchOptimizedRouteLeg1, fetchPatientPoints } from "../actions";
+import { fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2, fetchPatientPoints } from "../actions";
 
 // data needed for overlay here
 // const dataPath = [
@@ -61,7 +61,8 @@ class Map extends Component {
         lng: -78.9371,
       },
       ptPointData: [],
-      routeLeg2: [],
+      routeLeg1: {},
+      routeLeg2: {},
       viewport: {
         latitude: 35.989341,
         longitude: -78.926232,
@@ -95,60 +96,37 @@ class Map extends Component {
     return ptCoords;
   }
 
+
   btnClickHandler = () => {
     console.log("clicked!");
     // Compile the RN starting coordinates into an array
-    let startCoords = [
+    const startCoordsLeg1 = [
       this.state.startingRNCoords.lng,
       this.state.startingRNCoords.lat,
     ];
+    const middleCoords = [];
+    const endPatientLeg1 = ptCoords.find(patient => {
+      return patient.visitPriority === 1
+    }) 
+    const endCoordsLeg1 = [endPatientLeg1.Lng,endPatientLeg1.Lat];
+    this.props.fetchOptimizedRouteLeg1(startCoordsLeg1, middleCoords, endCoordsLeg1);
 
-    // Compile patient coordinates
-    let firstPatientCoords = [];
-    let remainingPatientCoords = [];
-    ptCoords.map((patient) => {
-      // Grab the priority (first) pt lng/lat and push into array
-      if (patient.visitPriority === 1) {
-        firstPatientCoords.push(patient.Lng) &&
-          firstPatientCoords.push(patient.Lat);
-      } else {
-        // If not a priority patient, push lng/lat into a second array
-        remainingPatientCoords.push(patient.Lng) &&
-          remainingPatientCoords.push(patient.Lat);
-      }
-      return firstPatientCoords && remainingPatientCoords;
-    });
-
-    // Format coords for the Optimizer: join into comma-separated pairs.
-    // Concat the pairs with semi-colon between them.
-    let commaPair1;
-    let commaPair2;
-    let firstLegCoordsForNursingRoute;
-    let prepCoordsForFirstLegOfRoute = () => {
-      commaPair1 = startCoords.join();
-      commaPair2 = firstPatientCoords.join();
-      firstLegCoordsForNursingRoute = commaPair1 + ";" + commaPair2;
-      return firstLegCoordsForNursingRoute;
-    };
-    prepCoordsForFirstLegOfRoute();
-
-    this.props.fetchOptimizedRouteLeg1(firstLegCoordsForNursingRoute);
-    
-    // console.log("props" , this.props)
-    // this.state.routeLeg1_geoJson.features.push(this.props.routeLeg1);
-    // this.setState({ routeLeg1_geoJson.features[0]: this.props.routeLeg1 });
-
-    // firstLeg = json.payload.data.map((item) => {
-    //   const container = {};
-    //   container.ptId = item.pt_Id;
-    //   container.ptName = [item.ptFirstName, item.ptLastName].join(" ");
-    //   container.nursingNeed = item.nursingNeed;
-    //   container.visitPriority = item.visitPriority;
-    //   container.Lng = item.ptHomeLng;
-    //   container.Lat = item.ptHomeLat;
-    //   return container;
-    // });
+    // grab details for second leg of route
+    const startCoordsLeg2 = endCoordsLeg1;
+    const endCoordsLeg2 = startCoordsLeg1;
+    const middlePatients = [];
+    ptCoords.forEach(patient => {
+      console.log("ptVisitPriortiy", patient.visitPriority)
+      if (patient.visitPriority === 0) {
+          let ptCoordArray = [patient.Lng, patient.Lat]
+          middlePatients.push(ptCoordArray)
+      };
+      return middlePatients;
+    })
+    this.props.fetchOptimizedRouteLeg2(startCoordsLeg2, middlePatients, endCoordsLeg2);
   };
+  
+
 
   render() {
     return (
@@ -244,9 +222,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchPatientPoints, fetchOptimizedRouteLeg1 },
+    { fetchPatientPoints, fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2 },
     dispatch
   );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
+
+

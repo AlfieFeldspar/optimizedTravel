@@ -5,9 +5,8 @@ export default function (state = '', action) {
     console.log('in route reducer')
   switch (action.type) {
     case FETCH_OPTIMIZED_ROUTE_LEG1 :
-      console.log("payload", action.payload)
-      
-      return action.payload;
+      console.log("payload.data.trips for route Leg1", action.payload.data.trips[0].geometry)
+      return action.payload.data.trips[0].geometry;
     default:
       return state;
   }

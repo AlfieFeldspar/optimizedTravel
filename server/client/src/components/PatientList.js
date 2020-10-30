@@ -10,7 +10,8 @@ class PatientList extends Component {
     super(props);
     this.state = {
       ptPointData: [],
-      
+      visitPriority: 0,
+
     };
   }
 
@@ -28,18 +29,14 @@ class PatientList extends Component {
       container.Lat = item.ptHomeLat;
       return container;
     });
+    console.log ("ptData", ptData);
     this.setState({ ptPointData: ptData }, function () {});
     return ptData;
   }
 
-  handlePriorityChange = (event) => {
+  handlePriorityChange = (event, name) => {
     console.log("clicked!" ,event.target.value)
-    console.log("ref data in event handler", this.state.ptPointData)
-    this.setState({
-      ptPointData.visitPriority: event.target.value,
-    }, function () {
-      console.log ("state after event", this.state.ptPointData)
-    });
+    console.log("Pt in event handler", name)
   }
 
   render() {
@@ -54,7 +51,7 @@ class PatientList extends Component {
         </thead>
         <tbody>
           {ptData.map((patient) => (
-            <tr className="row-sm-3 patient-row" key={patient._id}>
+            <tr className="row-sm-3 patient-row" key={patient.pt_id}>
               <th scope="col" className="patient-name">
                 {patient.ptName}
               </th>
@@ -65,12 +62,16 @@ class PatientList extends Component {
 
                    <div className="form-check" ref='radio-form'>
                          <input className="form-check-input" type="radio" value="0" 
-                          checked={patient.visitPriority === 0} onChange={this.handlePriorityChange}></input>
-                         <label>0</label>        
+                          checked={patient.visitPriority === 0} onChange={(event) => {
+                            this.handlePriorityChange(event, patient.ptName)
+                            }}></input>
+                         <label>low</label>        
                        </div>
                        <div className="form-check">
-                         <input className="form-check-input" type="radio" value="1" checked={patient.visitPriority === 1} onChange={this.handlePriorityChange}></input>
-                         <label>1</label>        
+                         <input className="form-check-input" type="radio" value="1" checked={patient.visitPriority === 1} onChange={(event) => {
+                            this.handlePriorityChange(event, patient.ptName)
+                            }}></input>
+                         <label>high</label>        
                        </div>
 
                
