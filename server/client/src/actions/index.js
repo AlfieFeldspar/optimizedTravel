@@ -3,6 +3,7 @@ import axios from "axios";
 export const FETCH_PATIENT_POINTS = "FETCH_PATIENT_POINTS ";
 export const FETCH_OPTIMIZED_ROUTE_LEG1 = "FETCH_OPTIMIZED_ROUTE_LEG1";
 export const FETCH_OPTIMIZED_ROUTE_LEG2 = "FETCH_OPTIMIZED_ROUTE_LEG2";
+export const CHANGE_PATIENT_PRIORITY = "CHANGE_PATIENT_PRIORITY";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -61,17 +62,6 @@ function stringifyCoordSequence(nestedArrayofCoordPairs) {
   }).join(';');  
 }
 
-
-
-// getCoordinates = async () => {
-//   const endpoint = `https://api.mapbox.com/directions/v5/mapbox/cycling/${
-//     this.props.userLong
-//   },${this.props.userLat};${this.props.restaurantLong},${
-//     this.props.restaurantLat
-//   }?geometries=geojson&access_token=pk.eyJ1IjoicmhlYXJhbyIsImEiOiJjanY3NGloZm4wYzR5NGVxcGU4MXhwaTJtIn0.d_-A1vz2gnk_h1GbTchULA`;
-//   const res = await axios.get(endpoint);
-//   data[0].path = res.data.routes[0].geometry.coordinates;
-//   this.setState({
-//     loadedData: true
-//   });
-// };
+export function changePatientPriority(patientId) {
+  console.log("getting ready to change priority!")
+}

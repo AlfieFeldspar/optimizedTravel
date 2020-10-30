@@ -10,10 +10,7 @@ body {
   position: absolute;
 }
 
-.patient-table {
-  font-size: small;
-  font-weight: lighter;
-}
+
 
 .map-title {
   display: inline-block;
@@ -35,4 +32,24 @@ body {
   margin-left: 310px;
   margin-top: 2px;
   box-shadow: 2px 4px black; 
+}
+
+.patient-table {
+  font-family: "Cantarell";
+  font-size: 10pt;
+  font-weight: lighter;
+  margin-left: 10px;
+}
+
+.priority-button {
+  width: 60px;
+  font-family: "Cantarell";
+  font-size: 10pt;
+  font-weight: bold;
+  border-color: slategrey;
+}
+
+.table-headers {
+  font-size: 12pt;
+  text-decoration: underline;
 }

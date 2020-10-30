@@ -8,41 +8,8 @@ import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
 
 import { fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2, fetchPatientPoints } from "../actions";
 
-// data needed for overlay here
-// const dataPath = [
-//   {
-//     name: "route-leg1",
-//     color: [101, 147, 245],
-//     path: [
-//       [-78.937101, 35.928519],
-//       [-78.938031, 35.928279],
-//       [-78.936648, 35.927572],
-//       [-78.941965, 35.926196],
-//       [-78.942002, 35.923867],
-//       [-78.947538, 35.921956],
-//       [-78.956704, 35.922885],
-//       [-78.959679, 35.920261],
-//       [-78.960362, 35.920792],
-//       [-78.960766, 35.932964],
-//       [-78.976945, 35.961492],
-//       [-78.969949, 35.965173],
-//       [-78.964656, 35.966214],
-//       [-78.96241, 35.968515],
-//       [-78.957987, 35.980268],
-//       [-78.958124, 36.003292],
-//       [-78.954671, 36.012439],
-//       [-78.951207, 36.015644],
-//       [-78.941766, 36.015114],
-//       [-78.93667, 36.013311],
-//       [-78.937287, 36.008099],
-//     ],
-//   },
-// ];
-
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
-
-let ptCoords = [];
 
 const lineLayer = {
   type: 'line',
@@ -60,9 +27,6 @@ class Map extends Component {
         lat: 35.9285,
         lng: -78.9371,
       },
-      ptPointData: [],
-      routeLeg1: {},
-      routeLeg2: {},
       viewport: {
         latitude: 35.989341,
         longitude: -78.926232,
@@ -71,31 +35,12 @@ class Map extends Component {
         height: "50vh",
         display: "block",
       },
-      routeLeg1_geoJson: {
-        type: "FeatureCollection",
-        features: [],
-      },
+      // lineFeatureLeg1: {
+      //   type: "LineString",
+      //   coordinates: []        
+      // },
     };
   }
-
-  async componentDidMount() {
-    const response = this.props.fetchPatientPoints(1);
-    const json = await response;
-    ptCoords = json.payload.data.map((item) => {
-      const container = {};
-      container.ptId = item.pt_Id;
-      container.ptName = [item.ptFirstName, item.ptLastName].join(" ");
-      container.nursingNeed = item.nursingNeed;
-      container.visitPriority = item.visitPriority;
-      container.Lng = item.ptHomeLng;
-      container.Lat = item.ptHomeLat;
-      return container;
-    });
-
-    this.setState({ ptPointData: ptCoords }, function () {});
-    return ptCoords;
-  }
-
 
   btnClickHandler = () => {
     console.log("clicked!");
@@ -105,7 +50,7 @@ class Map extends Component {
       this.state.startingRNCoords.lat,
     ];
     const middleCoords = [];
-    const endPatientLeg1 = ptCoords.find(patient => {
+    const endPatientLeg1 = this.props.patientData.find(patient => {
       return patient.visitPriority === 1
     }) 
     const endCoordsLeg1 = [endPatientLeg1.Lng,endPatientLeg1.Lat];
@@ -115,7 +60,7 @@ class Map extends Component {
     const startCoordsLeg2 = endCoordsLeg1;
     const endCoordsLeg2 = startCoordsLeg1;
     const middlePatients = [];
-    ptCoords.forEach(patient => {
+    this.props.patientData.forEach(patient => {
       console.log("ptVisitPriortiy", patient.visitPriority)
       if (patient.visitPriority === 0) {
           let ptCoordArray = [patient.Lng, patient.Lat]
@@ -125,8 +70,6 @@ class Map extends Component {
     })
     this.props.fetchOptimizedRouteLeg2(startCoordsLeg2, middlePatients, endCoordsLeg2);
   };
-  
-
 
   render() {
     return (
@@ -147,11 +90,11 @@ class Map extends Component {
           mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
           mapboxApiAccessToken={mapboxToken}
         >
-          {ptCoords.map((patient) => (
+          {this.props.patientData.map((patient) => (
             <Marker
-              key={patient._id}
-              latitude={patient.Lat}
-              longitude={patient.Lng}
+              key={patient.pt_id}
+              latitude={patient.ptHomeLat}
+              longitude={patient.ptHomeLng}
               offsetLeft={-12}
               offsetTop={-24}
             >
@@ -214,7 +157,7 @@ class Map extends Component {
 
 function mapStateToProps(state) {
   return {
-    ptPointData: state.ptPointData,
+    patientData: state.patientData,
     routeLeg1: state.routeLeg1,
     routeLeg2: state.routeLeg2,
   };
@@ -228,5 +171,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
-
-
