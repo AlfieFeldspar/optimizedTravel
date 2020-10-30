@@ -1,14 +1,56 @@
 import React, { Component } from "react";
+// import DeckGL from "deck.gl";
+// import { PathLayer } from "@deck.gl/layers";
+
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ReactMapGL, { Marker } from "react-map-gl";
+import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
 
 import { fetchOptimizedRouteLeg1, fetchPatientPoints } from "../actions";
+
+// data needed for overlay here
+// const dataPath = [
+//   {
+//     name: "route-leg1",
+//     color: [101, 147, 245],
+//     path: [
+//       [-78.937101, 35.928519],
+//       [-78.938031, 35.928279],
+//       [-78.936648, 35.927572],
+//       [-78.941965, 35.926196],
+//       [-78.942002, 35.923867],
+//       [-78.947538, 35.921956],
+//       [-78.956704, 35.922885],
+//       [-78.959679, 35.920261],
+//       [-78.960362, 35.920792],
+//       [-78.960766, 35.932964],
+//       [-78.976945, 35.961492],
+//       [-78.969949, 35.965173],
+//       [-78.964656, 35.966214],
+//       [-78.96241, 35.968515],
+//       [-78.957987, 35.980268],
+//       [-78.958124, 36.003292],
+//       [-78.954671, 36.012439],
+//       [-78.951207, 36.015644],
+//       [-78.941766, 36.015114],
+//       [-78.93667, 36.013311],
+//       [-78.937287, 36.008099],
+//     ],
+//   },
+// ];
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 
 let ptCoords = [];
+
+const lineLayer = {
+  type: 'line',
+  paint: {
+    'line-color': '#000000',
+    'line-width': 3
+  }
+}
 
 class Map extends Component {
   constructor(props) {
@@ -19,7 +61,6 @@ class Map extends Component {
         lng: -78.9371,
       },
       ptPointData: [],
-      routeLeg1: [],
       routeLeg2: [],
       viewport: {
         latitude: 35.989341,
@@ -28,6 +69,10 @@ class Map extends Component {
         width: "100vw",
         height: "50vh",
         display: "block",
+      },
+      routeLeg1_geoJson: {
+        type: "FeatureCollection",
+        features: [],
       },
     };
   }
@@ -52,24 +97,29 @@ class Map extends Component {
 
   btnClickHandler = () => {
     console.log("clicked!");
-    // Compile the RN starting coordinates into an array 
-    let startCoords = [this.state.startingRNCoords.lng,this.state.startingRNCoords.lat]
+    // Compile the RN starting coordinates into an array
+    let startCoords = [
+      this.state.startingRNCoords.lng,
+      this.state.startingRNCoords.lat,
+    ];
 
     // Compile patient coordinates
     let firstPatientCoords = [];
     let remainingPatientCoords = [];
-    ptCoords.map(patient => {
+    ptCoords.map((patient) => {
       // Grab the priority (first) pt lng/lat and push into array
       if (patient.visitPriority === 1) {
-        firstPatientCoords.push(patient.Lng) && firstPatientCoords.push(patient.Lat);
+        firstPatientCoords.push(patient.Lng) &&
+          firstPatientCoords.push(patient.Lat);
       } else {
         // If not a priority patient, push lng/lat into a second array
-        remainingPatientCoords.push(patient.Lng) && remainingPatientCoords.push(patient.Lat)
+        remainingPatientCoords.push(patient.Lng) &&
+          remainingPatientCoords.push(patient.Lat);
       }
       return firstPatientCoords && remainingPatientCoords;
-    })
+    });
 
-    // Format coords for the Optimizer: join into comma-separated pairs. 
+    // Format coords for the Optimizer: join into comma-separated pairs.
     // Concat the pairs with semi-colon between them.
     let commaPair1;
     let commaPair2;
@@ -77,40 +127,30 @@ class Map extends Component {
     let prepCoordsForFirstLegOfRoute = () => {
       commaPair1 = startCoords.join();
       commaPair2 = firstPatientCoords.join();
-      firstLegCoordsForNursingRoute = commaPair1 +";"+commaPair2;
+      firstLegCoordsForNursingRoute = commaPair1 + ";" + commaPair2;
       return firstLegCoordsForNursingRoute;
-    }
+    };
     prepCoordsForFirstLegOfRoute();
 
     this.props.fetchOptimizedRouteLeg1(firstLegCoordsForNursingRoute);
-    this.setState({routeLeg1: this.props.routeLeg1});
     
-  
+    // console.log("props" , this.props)
+    // this.state.routeLeg1_geoJson.features.push(this.props.routeLeg1);
+    // this.setState({ routeLeg1_geoJson.features[0]: this.props.routeLeg1 });
 
-
-
-      // firstLeg = json.payload.data.map((item) => {
-      //   const container = {};
-      //   container.ptId = item.pt_Id;
-      //   container.ptName = [item.ptFirstName, item.ptLastName].join(" ");
-      //   container.nursingNeed = item.nursingNeed;
-      //   container.visitPriority = item.visitPriority;
-      //   container.Lng = item.ptHomeLng;
-      //   container.Lat = item.ptHomeLat;
-      //   return container;
-      // });
-  
-      
-
-    
-
-
-
-
+    // firstLeg = json.payload.data.map((item) => {
+    //   const container = {};
+    //   container.ptId = item.pt_Id;
+    //   container.ptName = [item.ptFirstName, item.ptLastName].join(" ");
+    //   container.nursingNeed = item.nursingNeed;
+    //   container.visitPriority = item.visitPriority;
+    //   container.Lng = item.ptHomeLng;
+    //   container.Lat = item.ptHomeLat;
+    //   return container;
+    // });
   };
 
   render() {
-    console.log(ptCoords);
     return (
       <>
         <div>
@@ -179,6 +219,15 @@ class Map extends Component {
               <circle cx="18.5" cy="18.5" r="2.5"></circle>
             </svg>
           </Marker>
+
+          {/* only want to show on button click */}
+           this.props.geometry.coordinates ? (
+          {(
+            <Source type="geojson" data={this.props.geometry.coordinates }>
+              <Layer {...lineLayer} />
+            </Source>
+          )}) : null;
+
         </ReactMapGL>
       </>
     );
@@ -189,12 +238,15 @@ function mapStateToProps(state) {
   return {
     ptPointData: state.ptPointData,
     routeLeg1: state.routeLeg1,
-    routeLeg2: state.routeLeg2
+    routeLeg2: state.routeLeg2,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchPatientPoints, fetchOptimizedRouteLeg1 }, dispatch);
+  return bindActionCreators(
+    { fetchPatientPoints, fetchOptimizedRouteLeg1 },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
