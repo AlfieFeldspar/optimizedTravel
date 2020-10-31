@@ -1,9 +1,14 @@
 import React, { Component } from "react";
-import Map from '../components/Map';
-import PatientList from '../components/PatientList';
-
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import Map from "../components/Map";
+import PatientList from "../components/PatientList";
+import {fetchPatientPoints} from '../actions';
 
 class App extends Component {
+  componentDidMount() {
+    this.props.fetchPatientPoints(1);
+  }
   render() {
     return (
       <div>
@@ -14,4 +19,8 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchPatientPoints } , dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(App);

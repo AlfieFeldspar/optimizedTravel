@@ -1,10 +1,16 @@
 import { combineReducers } from "redux";
 import PatientPointsReducer from "./reducer_patientPoints";
-import OptimizedRouteReducer from "./reducer_optimized_route";
-  
+import OptimizedRouteReducerLeg1 from "./reducer_optimized_route_leg1";
+import OptimizedRouteReducerLeg2 from "./reducer_optimized_route_leg2"; 
+import ChangePatientPriorityReducer from "./reducer_change_pt_priority"; 
+
+console.log("in root reducer")
+
 const rootReducer = combineReducers({
-  data: PatientPointsReducer,
-  routes: OptimizedRouteReducer
+  patientData: PatientPointsReducer,
+  routeLeg1: OptimizedRouteReducerLeg1,
+  routeLeg2: OptimizedRouteReducerLeg2,
+  changedPtPriority: ChangePatientPriorityReducer,
 });
 
 export default rootReducer;

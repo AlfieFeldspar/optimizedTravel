@@ -27,7 +27,8 @@ TODO
     * [x] Route to a root
     * [X] GET all patients (for manager)
     * [x] GET pts by RN_ID
-    * [] POST to pts to change visitPriority
+    * [x] POST to pts to change visitPriority
+
 
 * [x] Front end React/Redux, general 
     * [x] started & running
@@ -43,14 +44,19 @@ TODO
     * [x] Add icon for nurse starting point 
     * [] Change color of icon if high priority?
     * [] Routing
-      * * [] First route from home or office to any top priority patients - almost there!
-        * [] Then route from that patient starting point to other spots
+        * [x] Route Leg1 from home or office to any top priority patients: receive route and setState.
+        * [] Display Leg1
+        * [x] Route Leg2 from first patient starting point to other spots
+        * [] Display Leg2
         * [] If no high priority patients, just route from home or office 
 
 * [] Front end RN nav bar on MAP
     * [x] AT LEAST display app name
     * [x] Add 'route' button
-  * * [] Wire up 'route' button to hit Mapbox API and generate routes -  almost there!
+  * * [] Wire up 'route' button
+        * [x] successful for Leg1: hit Mapbox API and generate routes
+        * [x] add Leg2 to button
+        * [] display the routes!
     * [] Toggle 'Patients' and 'Navigate' to show/hide table, change map size, trigger API call
     * [] Extract the Nav Bar and Routing features to new component from Map
 
@@ -59,11 +65,11 @@ TODO
     * [x] Display list of patients
     * [x] Sort by patient last name
     * [] TOOL TIPS: Click on name in list and marker flashes or changes color [STRETCH GOAL]
-    * [] In-table radio button to change visit priority
-        * [] Add radio buttons
-        * [] POST endpt backend build, 
-        * [] front end ACTION
-        * [] Add onChange/onClick handler
+    * [] In-table button to change visit priority
+        * [x] Add button
+        * [x] POST endpt backend build, 
+        * [x] front end ACTION
+        * [x] Add onChange/onClick handler
 
 * [] Front end RN launch page (mobile)
     * [] Drop box for nurse's name to grab Id and filter patients
@@ -73,5 +79,5 @@ TODO
 * [] Front end actions/reducers
     * [x] FETCH ptPoints from mySql API - list of pts for nurse to display on map
     * [x] FETCH optimized route from Mapbox API
-    * [] ACTION to change visitPriority
+    * [x] ACTION to change visitPriority
     * [] FETCH nurse id from name on startup.  

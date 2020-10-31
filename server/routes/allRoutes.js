@@ -27,22 +27,6 @@ router.get("/", (request, response, next) => {
   response.send("hello from api root!");
 });
 
-// endpoint for users logging in. Adds user to DB, returns
-// newUser w/ {Id, name, active} to front end
-// router.post("/login", (request, response, next) => {
-//   // Create a new user and add them to database
-//   if (!request.body.username) {
-//     // eslint-disable-next-line no-console
-//     console.log("Please add a username");
-//   }
-
-//   const newUser = {
-//     user_Id: Math.floor(Math.random() * 50000),
-//     name: request.body.username,
-//     active: 1,
-//   };
-//   // Query the pool
-// //   pool.query(
 //     "insert into users (user_Id, username, active, timestamp) values (?, ?, ?, CURRENT_TIMESTAMP)",
 //     [newUser.user_Id, newUser.name, newUser.active],
 //     (error, results, fields) => {
@@ -85,7 +69,7 @@ router.get("/patients", (request, response, next) => {
 router.get("/patients/:nurse", (request, response, next) => {
   // Query the pool
   pool.query(
-    "SELECT ptTable.pt_Id, ptTable.ptFirstName, ptTable.ptLastName, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority FROM ptTable INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
+    "SELECT ptTable.pt_Id, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority, ptTable.ptFirstName, ptTable.ptLastName FROM ptTable INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
     request.params.nurse,
     (error, results, fields) => {
       // Handle error after the release.
@@ -95,5 +79,27 @@ router.get("/patients/:nurse", (request, response, next) => {
     }
   );
 });
+
+router.post(
+  "/patients/:patientId/priority/:priority",
+  (request, response, next) => {
+    // Query the pool
+    pool.query(
+      "UPDATE ptTable SET visitPriority = ? WHERE pt_Id = ?",
+      [request.params.priority, request.params.patientId],
+      (error, results, fields) => {
+        // Handle error after the release.
+        if (error) throw error;
+        // pool.query(
+        //   "SELECT pt_Id, ptHomeLng, ptHomeLat, nursingNeed, visitPriority, ptFirstName, ptLastName FROM ptTable ORDER BY ptLastName ASC",
+        //   (error, results, fields) => {
+        //     if (error) throw error;
+            response.send(results);
+          }
+        );
+      }
+    );
+  // }
+// );
 
 module.exports = router;
