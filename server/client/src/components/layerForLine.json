@@ -1,0 +1,22 @@
+{"id": "route",
+"type": "line",
+"source': {
+  "type": "geojson",
+  "data": { "geojsonDataLine" },
+},
+"layout": {
+  "line-join": "round",
+  "line-cap": "round",
+},
+"paint": {
+  "line-color": "#888",
+  "line-width": 8,
+},
+const geojsonDataLine = {
+  "type": "Feature",
+  "properties": {},
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [],
+  },
+};

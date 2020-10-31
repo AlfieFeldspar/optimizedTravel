@@ -1,7 +1,4 @@
 import React, { Component } from "react";
-// import DeckGL from "deck.gl";
-// import { PathLayer } from "@deck.gl/layers";
-
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
@@ -12,24 +9,34 @@ import {
   fetchPatientPoints,
 } from "../actions";
 
-const mapboxToken =
-  "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
+const layerForLine = {
+  id: "route",
+type: "line",
+source: {
+  type: "geojson",
+  data: { geojsonDataLine },
+},
+layout: {
+  "line-join": "round",
+  "line-cap": "round",
+},
+paint: {
+  "line-color": "#888",
+  "line-width": 8,
+}
+}
 
-const lineLayer = {
-  type: "line",
-  paint: {
-    "line-width": ["interpolate", ["linear"], ["zoom"], 5, 1.5, 10, 3],
-    "line-color": "green",
-    "line-blur": 0.5,
-    "line-opacity": 0.6,
-  },
-  layout: {
-    "line-join": "round",
+const geojsonDataLine = {
+  "type": "Feature",
+  "properties": {},
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [],
   },
 };
 
-const lineFeatureLeg1 = { type: "LineString", coordinates: [] };
-const lineFeatureLeg2 = { type: "LineString", coordinates: [] };
+const mapboxToken =
+  "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 
 class Map extends Component {
   constructor(props) {
@@ -48,10 +55,6 @@ class Map extends Component {
         display: "block",
       },
     };
-  }
-
-  componentDidMount() {
-    this.animatePoint();
   }
 
   btnClickHandler = () => {
@@ -89,111 +92,127 @@ class Map extends Component {
       middlePatients,
       endCoordsLeg2
     );
-    setTimeout(() => {
-      console.log("This will run after a short break!");
-      console.log("props route1", this.props.routeLeg1);
-      lineFeatureLeg1.coordinates.push(this.props.routeLeg1);
-      console.log("lineFeatureLeg1", lineFeatureLeg1);
-      return lineFeatureLeg1;
-    }, 1000);
-    setTimeout(() => {
-      console.log("This will run after a short break!");
-      console.log("props route2", this.props.routeLeg2);
-      lineFeatureLeg2.coordinates.push(this.props.routeLeg2);
-      console.log("lineFeatureLeg2", lineFeatureLeg2);
-      return lineFeatureLeg2;
-    }, 1000);
-    this._animatePoint();
-  };
-  
-  _animatePoint = () => {
-        //merge the two line features? setstate with the merged version?
-          ),
-        ],
-      },
-    });
-    this.animation = window.requestAnimationFrame(this.animatePoint);
-  };
 
-  render() {
-    return (
-      <>
-        <div>
-          <div className="map-title">Traveling Nurse Route Planner</div>
-          <button
-            className="btn btn-primary btn-sm map-button"
-            type="button"
-            onClick={this.btnClickHandler}
+    setTimeout(() => {
+      // Ensure all props are back
+      // Merge all coords into one trip
+      // console.log("props route1", this.props.routeLeg1);
+      // console.log("props route2", this.props.routeLeg2);
+      let fullTrip = [this.props.routeLeg1.coordinates];
+      let leg2 = [...this.props.routeLeg2.coordinates];
+      fullTrip.push(...leg2);
+     
+      geojsonDataLine.geometry.coordinates.push(fullTrip);
+      console.log(geojsonDataLine);
+      debugger;
+
+      
+      //push into geojsonDataLine.geometry.coordinates[]
+      //return geojsonDataLine;
+    }, 1000);
+
+    
+  
+    const addLines = () => {
+      const map = this.ref.map.getMap();
+      map.addLayer({
+        id: "route",
+        type: "line",
+        source: {
+          type: "geojson",
+          data: { geojsonDataLine },
+        },
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#888",
+          "line-width": 8,
+        },
+      });
+    };
+  }
+
+
+    render()
+    {
+      return (
+        <>
+          <div>
+            <div className="map-title">Traveling Nurse Route Planner</div>
+            <button
+              className="btn btn-primary btn-sm map-button"
+              type="button"
+              onClick={this.btnClickHandler}
+            >
+              Route
+            </button>
+          </div>
+          <ReactMapGL
+            {...this.state.viewport}
+            onViewportChange={(viewport) => this.setState({ viewport })}
+            id={"map"}
+            ref={"map"}
+            onLoad={this.addLines}
+            mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
+            mapboxApiAccessToken={mapboxToken}
           >
-            Route
-          </button>
-        </div>
-        <ReactMapGL
-          {...this.state.viewport}
-          onViewportChange={(viewport) => this.setState({ viewport })}
-          mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
-          mapboxApiAccessToken={mapboxToken}
-        >
-          {this.props.patientData.map((patient) => (
+            {this.props.patientData.map((patient) => (
+              <Marker
+                key={patient.pt_id}
+                latitude={patient.ptHomeLat}
+                longitude={patient.ptHomeLng}
+                offsetLeft={-12}
+                offsetTop={-24}
+              >
+                <svg
+                  className="marker"
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                  }}
+                  viewBox="0 0 24 24"
+                  strokeWidth="3"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </Marker>
+            ))}
             <Marker
-              key={patient.pt_id}
-              latitude={patient.ptHomeLat}
-              longitude={patient.ptHomeLng}
+              latitude={this.state.startingRNCoords.lat}
+              longitude={this.state.startingRNCoords.lng}
               offsetLeft={-12}
               offsetTop={-24}
             >
               <svg
-                className="marker"
+                className="feather feather-truck"
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width: "24",
+                  height: "24",
                 }}
                 viewBox="0 0 24 24"
-                strokeWidth="3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                stroke="#ff6600"
+                strokeWidth="3"
               >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
               </svg>
             </Marker>
-          ))}
-          <Marker
-            latitude={this.state.startingRNCoords.lat}
-            longitude={this.state.startingRNCoords.lng}
-            offsetLeft={-12}
-            offsetTop={-24}
-          >
-            <svg
-              className="feather feather-truck"
-              style={{
-                width: "24",
-                height: "24",
-              }}
-              viewBox="0 0 24 24"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              stroke="#ff6600"
-              strokeWidth="3"
-            >
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-          </Marker>
-
-          {lineFeatureLeg1 && (
-            <Source type="geojson" data={lineFeatureLeg1}>
-              <Layer {...lineLayer}></Layer>
-            </Source>
-          )}
-        </ReactMapGL>
-      </>
-    );
-  }
+          </ReactMapGL>
+        </>
+      );
+    }
+  
 }
 
 function mapStateToProps(state) {
