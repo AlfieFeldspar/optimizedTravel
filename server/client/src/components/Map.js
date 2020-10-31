@@ -9,23 +9,6 @@ import {
   fetchPatientPoints,
 } from "../actions";
 
-const layerForLine = {
-  id: "route",
-type: "line",
-source: {
-  type: "geojson",
-  data: { geojsonDataLine },
-},
-layout: {
-  "line-join": "round",
-  "line-cap": "round",
-},
-paint: {
-  "line-color": "#888",
-  "line-width": 8,
-}
-}
-
 const geojsonDataLine = {
   "type": "Feature",
   "properties": {},
@@ -93,25 +76,14 @@ class Map extends Component {
       endCoordsLeg2
     );
 
+    // Ensure all props are back
     setTimeout(() => {
-      // Ensure all props are back
       // Merge all coords into one trip
-      // console.log("props route1", this.props.routeLeg1);
-      // console.log("props route2", this.props.routeLeg2);
       let fullTrip = [this.props.routeLeg1.coordinates];
       let leg2 = [...this.props.routeLeg2.coordinates];
       fullTrip.push(...leg2);
-     
       geojsonDataLine.geometry.coordinates.push(fullTrip);
-      console.log(geojsonDataLine);
-      debugger;
-
-      
-      //push into geojsonDataLine.geometry.coordinates[]
-      //return geojsonDataLine;
     }, 1000);
-
-    
   
     const addLines = () => {
       const map = this.ref.map.getMap();
