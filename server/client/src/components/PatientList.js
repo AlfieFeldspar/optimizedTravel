@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { changePatientPriority } from '../actions/index';
-// import { bindActionCreators } from "redux";
+import { changePatientPriority } from "../actions/index";
+import { bindActionCreators } from "redux";
 
 class PatientList extends Component {
-  handlePriorityChange = (event, Id) => {
+
+  
+  handlePriorityChange = (event, pt_Id) => {
+    let priority;
     console.log("clicked!", event.target.value);
-    console.log("Pt in event handler", Id);
-    changePatientPriority(Id);
+    console.log("Pt in event handler", pt_Id);
+    event.target.value === 'Low' ? (priority = 'High') : (priority = 'Low');
+    console.log("target", event.target.value, "priority", priority);
+    changePatientPriority(pt_Id, priority);
   };
 
   render() {
@@ -58,36 +63,12 @@ class PatientList extends Component {
 function mapStateToProps(state) {
   return {
     patientData: state.patientData,
+    changedPtPriority: state.changedPtPriority,
   };
 }
 
-// function mapDispatchToProps(dispatch) {
-//   return bindActionCreators({ fetchPatientPoints }, dispatch);
-// }
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ changePatientPriority }, dispatch);
+}
 
-export default connect(mapStateToProps, null)(PatientList);
-
-// <div className="form-check" ref="radio-form">
-// <input
-//   className="form-check-input"
-//   type="radio"
-//   value="0"
-//   checked={patient.visitPriority === 0}
-//   onChange={(event) => {
-//     this.handlePriorityChange(event, patient.pt_Id);
-//   }}
-// ></input>
-// <label>low</label>
-// </div>
-// <div className="form-check">
-// <input
-//   className="form-check-input"
-//   type="radio"
-//   value="1"
-//   checked={patient.visitPriority === 1}
-//   onChange={(event) => {
-//     this.handlePriorityChange(event, patient.ptName);
-//   }}
-// ></input>
-// <label>high</label>
-// </div>
+export default connect(mapStateToProps, mapDispatchToProps)(PatientList);

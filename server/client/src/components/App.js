@@ -13,7 +13,7 @@ class App extends Component {
     return (
       <div>
         <Map />
-        <PatientList pt_Id='ownProps.ptData.pt_ID'/>
+        <PatientList />
       </div>
     );
   }

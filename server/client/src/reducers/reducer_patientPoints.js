@@ -4,6 +4,8 @@ import { FETCH_PATIENT_POINTS } from '../actions/index';
 export default function (state = [], action) {
   switch (action.type) {
     case FETCH_PATIENT_POINTS:
+      console.log("updated ptdata", action.payload.data)
+
       return action.payload.data;
     default:
       return state;
