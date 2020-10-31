@@ -10,8 +10,6 @@ body {
   position: absolute;
 }
 
-
-
 .map-title {
   display: inline-block;
   position: absolute;
@@ -29,7 +27,7 @@ body {
   width: fit-content;
   z-index: 1 !important;
   position: absolute;
-  margin-left: 310px;
+  margin-left: 290px;
   margin-top: 2px;
   box-shadow: 2px 4px black; 
 }

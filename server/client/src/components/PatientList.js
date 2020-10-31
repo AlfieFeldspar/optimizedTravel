@@ -42,7 +42,7 @@ class PatientList extends Component {
                   input
                   type="button"
                   value={patient.visitPriority}
-                  className="btn priority-button"
+                  className="btn btn-sm"
                   style={
                     patient.visitPriority === "High"
                       ? { color: "red" }
