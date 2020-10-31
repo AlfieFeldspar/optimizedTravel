@@ -6,23 +6,30 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
 
-import { fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2, fetchPatientPoints } from "../actions";
+import {
+  fetchOptimizedRouteLeg1,
+  fetchOptimizedRouteLeg2,
+  fetchPatientPoints,
+} from "../actions";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 
-  const lineLayer = {
-    type: "line",
-    paint: {
-      "line-width": ["interpolate", ["linear"], ["zoom"], 5, 1.5, 10, 3],
-      "line-color": "green",
-      "line-blur": 0.5,
-      "line-opacity": 0.6
-    },
-    layout: {
-      "line-join": "round"
-    }
-  };
+const lineLayer = {
+  type: "line",
+  paint: {
+    "line-width": ["interpolate", ["linear"], ["zoom"], 5, 1.5, 10, 3],
+    "line-color": "green",
+    "line-blur": 0.5,
+    "line-opacity": 0.6,
+  },
+  layout: {
+    "line-join": "round",
+  },
+};
+
+const lineFeatureLeg1 = { type: "LineString", coordinates: [] };
+const lineFeatureLeg2 = { type: "LineString", coordinates: [] };
 
 class Map extends Component {
   constructor(props) {
@@ -40,11 +47,11 @@ class Map extends Component {
         height: "50vh",
         display: "block",
       },
-      // lineFeature: {
-      //   type: "LineString",
-      //   coordinates: [[],[]]        
-      // },
     };
+  }
+
+  componentDidMount() {
+    this.animatePoint();
   }
 
   btnClickHandler = () => {
@@ -55,36 +62,66 @@ class Map extends Component {
       this.state.startingRNCoords.lat,
     ];
     const middleCoords = [];
-    const endPatientLeg1 = this.props.patientData.find(patient => {
-      return patient.visitPriority === 1
-    }) 
-    const endCoordsLeg1 = [endPatientLeg1.Lng,endPatientLeg1.Lat];
-    this.props.fetchOptimizedRouteLeg1(startCoordsLeg1, middleCoords, endCoordsLeg1);
+    const endPatientLeg1 = this.props.patientData.find((patient) => {
+      return patient.visitPriority === "High";
+    });
+    // console.log("endPatientData",endPatientLeg1 );
+    const endCoordsLeg1 = [endPatientLeg1.ptHomeLng, endPatientLeg1.ptHomeLat];
+    this.props.fetchOptimizedRouteLeg1(
+      startCoordsLeg1,
+      middleCoords,
+      endCoordsLeg1
+    );
 
     // grab details for second leg of route
     const startCoordsLeg2 = endCoordsLeg1;
     const endCoordsLeg2 = startCoordsLeg1;
     const middlePatients = [];
-    this.props.patientData.forEach(patient => {
-      console.log("ptVisitPriortiy", patient.visitPriority)
-      if (patient.visitPriority === 0) {
-          let ptCoordArray = [patient.Lng, patient.Lat]
-          middlePatients.push(ptCoordArray)
-      };
+    this.props.patientData.forEach((patient) => {
+      if (patient.visitPriority === "Low") {
+        let ptCoordArray = [patient.ptHomeLng, patient.ptHomeLat];
+        middlePatients.push(ptCoordArray);
+      }
       return middlePatients;
-    })
-    this.props.fetchOptimizedRouteLeg2(startCoordsLeg2, middlePatients, endCoordsLeg2);
+    });
+    this.props.fetchOptimizedRouteLeg2(
+      startCoordsLeg2,
+      middlePatients,
+      endCoordsLeg2
+    );
+    setTimeout(() => {
+      console.log("This will run after a short break!");
+      console.log("props route1", this.props.routeLeg1);
+      lineFeatureLeg1.coordinates.push(this.props.routeLeg1);
+      console.log("lineFeatureLeg1", lineFeatureLeg1);
+      return lineFeatureLeg1;
+    }, 1000);
+    setTimeout(() => {
+      console.log("This will run after a short break!");
+      console.log("props route2", this.props.routeLeg2);
+      lineFeatureLeg2.coordinates.push(this.props.routeLeg2);
+      console.log("lineFeatureLeg2", lineFeatureLeg2);
+      return lineFeatureLeg2;
+    }, 1000);
+    this._animatePoint();
+  };
+  
+  _animatePoint = () => {
+        //merge the two line features? setstate with the merged version?
+          ),
+        ],
+      },
+    });
+    this.animation = window.requestAnimationFrame(this.animatePoint);
   };
 
   render() {
-    const { viewport, lineFeature } = this.state;
-
     return (
       <>
         <div>
           <div className="map-title">Traveling Nurse Route Planner</div>
           <button
-            class="btn btn-primary btn-sm map-button"
+            className="btn btn-primary btn-sm map-button"
             type="button"
             onClick={this.btnClickHandler}
           >
@@ -112,10 +149,10 @@ class Map extends Component {
                   height: "24px",
                 }}
                 viewBox="0 0 24 24"
-                stroke-width="3"
+                strokeWidth="3"
                 fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
@@ -136,10 +173,10 @@ class Map extends Component {
               }}
               viewBox="0 0 24 24"
               fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               stroke="#ff6600"
-              stroke-width="3"
+              strokeWidth="3"
             >
               <rect x="1" y="3" width="15" height="13"></rect>
               <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
@@ -148,13 +185,11 @@ class Map extends Component {
             </svg>
           </Marker>
 
-          {/* only want to show on button click */}
-        {/* {lineFeature && (
-          <Source type="geojson" data={lineFeature}>
-            <Layer {...lineLayer}></Layer>
-          </Source>
-        )} */}
-
+          {lineFeatureLeg1 && (
+            <Source type="geojson" data={lineFeatureLeg1}>
+              <Layer {...lineLayer}></Layer>
+            </Source>
+          )}
         </ReactMapGL>
       </>
     );

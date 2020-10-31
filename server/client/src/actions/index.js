@@ -25,7 +25,6 @@ export function fetchOptimizedRouteLeg1(start, middle, end) {
   inputCoordSequence.push(end);
   // current condition [[-27.2345,-7.2345], [27.2345,-27.2345],[27.2345,-27.2345], [27.2345,-27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
-
   const request = axios.get(
     `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`
   );
@@ -38,12 +37,10 @@ export function fetchOptimizedRouteLeg1(start, middle, end) {
 export function fetchOptimizedRouteLeg2(start, middle, end) {
   console.log("In actions to fetch route2");
   const inputCoordSequence = [start];
-  console.log("middle coords", middle);
   inputCoordSequence.push(...middle);
   inputCoordSequence.push(end);
   // current condition [[-27.2345,-7.2345], [27.2345,-27.2345],[27.2345,-27.2345], [27.2345,-27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
-  console.log("coords Leg2", coords);
   const request = axios.get(
     `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`
   );
@@ -63,7 +60,7 @@ function stringifyCoordSequence(nestedArrayofCoordPairs) {
       return stringifyCoordPair(element);
     })
     .join(";");
-}
+  }
 
 export function changePatientPriority(patientId, priority) {
   console.log("getting ready to change priority!");
