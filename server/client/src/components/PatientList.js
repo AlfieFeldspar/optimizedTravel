@@ -13,9 +13,8 @@ class PatientList extends Component {
     console.log("target", event.target.value, "priority", priority);
     changePatientPriority(pt_Id, priority);
     setTimeout(() => {
-      console.log("This will run after 3 seconds!");
+      console.log("This will run after half a second!");
       this.props.fetchPatientPoints(1);
-      this.forceUpdate();
     }, 100);
   };
 

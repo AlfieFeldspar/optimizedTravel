@@ -7,7 +7,6 @@ import ChangePatientPriorityReducer from "./reducer_change_pt_priority";
 console.log("in root reducer")
 
 const rootReducer = combineReducers({
-
   patientData: PatientPointsReducer,
   routeLeg1: OptimizedRouteReducerLeg1,
   routeLeg2: OptimizedRouteReducerLeg2,
