@@ -11,13 +11,18 @@ import { fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2, fetchPatientPoints } 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 
-const lineLayer = {
-  type: 'line',
-  paint: {
-    'line-color': '#000000',
-    'line-width': 3
-  }
-}
+  const lineLayer = {
+    type: "line",
+    paint: {
+      "line-width": ["interpolate", ["linear"], ["zoom"], 5, 1.5, 10, 3],
+      "line-color": "green",
+      "line-blur": 0.5,
+      "line-opacity": 0.6
+    },
+    layout: {
+      "line-join": "round"
+    }
+  };
 
 class Map extends Component {
   constructor(props) {
@@ -35,9 +40,9 @@ class Map extends Component {
         height: "50vh",
         display: "block",
       },
-      // lineFeatureLeg1: {
+      // lineFeature: {
       //   type: "LineString",
-      //   coordinates: []        
+      //   coordinates: [[],[]]        
       // },
     };
   }
@@ -72,6 +77,8 @@ class Map extends Component {
   };
 
   render() {
+    const { viewport, lineFeature } = this.state;
+
     return (
       <>
         <div>
@@ -142,12 +149,11 @@ class Map extends Component {
           </Marker>
 
           {/* only want to show on button click */}
-           {/* this.props.geometry.coordinates ? (
-          {(
-            <Source type="geojson" data={this.props.geometry.coordinates }>
-              <Layer {...lineLayer} />
-            </Source>
-          )}) : null; */}
+        {/* {lineFeature && (
+          <Source type="geojson" data={lineFeature}>
+            <Layer {...lineLayer}></Layer>
+          </Source>
+        )} */}
 
         </ReactMapGL>
       </>

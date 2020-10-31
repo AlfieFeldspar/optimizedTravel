@@ -90,16 +90,16 @@ router.post(
       (error, results, fields) => {
         // Handle error after the release.
         if (error) throw error;
-        pool.query(
-          "SELECT pt_Id, ptHomeLng, ptHomeLat, nursingNeed, visitPriority, ptFirstName, ptLastName FROM ptTable ORDER BY ptLastName ASC",
-          (error, results, fields) => {
-            if (error) throw error;
+        // pool.query(
+        //   "SELECT pt_Id, ptHomeLng, ptHomeLat, nursingNeed, visitPriority, ptFirstName, ptLastName FROM ptTable ORDER BY ptLastName ASC",
+        //   (error, results, fields) => {
+        //     if (error) throw error;
             response.send(results);
           }
         );
       }
     );
-  }
-);
+  // }
+// );
 
 module.exports = router;

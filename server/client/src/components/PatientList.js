@@ -1,18 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { changePatientPriority } from "../actions/index";
+import { changePatientPriority, fetchPatientPoints } from "../actions/index";
 import { bindActionCreators } from "redux";
 
 class PatientList extends Component {
 
-  
   handlePriorityChange = (event, pt_Id) => {
     let priority;
     console.log("clicked!", event.target.value);
     console.log("Pt in event handler", pt_Id);
-    event.target.value === 'Low' ? (priority = 'High') : (priority = 'Low');
+    event.target.value === "Low" ? (priority = "High") : (priority = "Low");
     console.log("target", event.target.value, "priority", priority);
     changePatientPriority(pt_Id, priority);
+    setTimeout(() => {
+      console.log("This will run after 3 seconds!");
+      this.props.fetchPatientPoints(1);
+      this.forceUpdate();
+    }, 100);
   };
 
   render() {
@@ -40,14 +44,14 @@ class PatientList extends Component {
                   type="button"
                   value={patient.visitPriority}
                   className="btn priority-button"
-                  onClick={(event) => {
-                    this.handlePriorityChange(event, patient.pt_Id);
-                  }}
                   style={
                     patient.visitPriority === "High"
                       ? { color: "red" }
                       : { color: "black" }
                   }
+                  onClick={(event) => {
+                    this.handlePriorityChange(event, patient.pt_Id);
+                  }}
                 >
                   {patient.visitPriority}
                 </button>
@@ -68,7 +72,7 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ changePatientPriority }, dispatch);
+  return bindActionCreators({ changePatientPriority, fetchPatientPoints }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatientList);
