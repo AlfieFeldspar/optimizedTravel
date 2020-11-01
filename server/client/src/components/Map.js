@@ -10,11 +10,16 @@ import {
 } from "../actions";
 
 const geojsonDataLine = {
-  "type": "Feature",
-  "properties": {},
-  "geometry": {
-    "type": "LineString",
-    "coordinates": [],
+  type: "Feature",
+  properties: {},
+  geometry: {
+    type: "LineString",
+    coordinates: [
+      [-78.937101, 35.928519],
+      [-78.961402, 35.918854],
+      [-79.022309, 36.033799],
+      [-78.937101, 35.928519],
+    ],
   },
 };
 
@@ -84,15 +89,27 @@ class Map extends Component {
       fullTrip.push(...leg2);
       geojsonDataLine.geometry.coordinates.push(fullTrip);
     }, 1000);
-  
-    const addLines = () => {
-      const map = this.ref.map.getMap();
-      map.addLayer({
-        id: "route",
-        type: "line",
-        source: {
-          type: "geojson",
-          data: { geojsonDataLine },
+  };
+
+  addLines = () => {
+    const map = this.ref.map.getMap();
+    map.addLayer({
+      id: "route",
+      type: "line",
+      source: {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: [
+              [-78.937101, 35.928519],
+              [-78.961402, 35.918854],
+              [-79.022309, 36.033799],
+              [-78.937101, 35.928519],
+            ],
+          },
         },
         layout: {
           "line-join": "round",
@@ -102,89 +119,86 @@ class Map extends Component {
           "line-color": "#888",
           "line-width": 8,
         },
-      });
-    };
-  }
+      },
+    });
+  };
 
-
-    render()
-    {
-      return (
-        <>
-          <div>
-            <div className="map-title">Traveling Nurse Route Planner</div>
-            <button
-              className="btn btn-primary btn-sm map-button"
-              type="button"
-              onClick={this.btnClickHandler}
-            >
-              Route
-            </button>
-          </div>
-          <ReactMapGL
-            {...this.state.viewport}
-            onViewportChange={(viewport) => this.setState({ viewport })}
-            id={"map"}
-            ref={"map"}
-            onLoad={this.addLines}
-            mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
-            mapboxApiAccessToken={mapboxToken}
+  render() {
+    return (
+      <>
+        <div>
+          <div className="map-title">Traveling Nurse Route Planner</div>
+          <button
+            className="btn btn-primary btn-sm map-button"
+            type="button"
+            onClick={this.btnClickHandler}
           >
-            {this.props.patientData.map((patient) => (
-              <Marker
-                key={patient.pt_id}
-                latitude={patient.ptHomeLat}
-                longitude={patient.ptHomeLng}
-                offsetLeft={-12}
-                offsetTop={-24}
-              >
-                <svg
-                  className="marker"
-                  style={{
-                    width: "24px",
-                    height: "24px",
-                  }}
-                  viewBox="0 0 24 24"
-                  strokeWidth="3"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                  <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-              </Marker>
-            ))}
+            Route
+          </button>
+        </div>
+        <ReactMapGL
+          {...this.state.viewport}
+          onViewportChange={(viewport) => this.setState({ viewport })}
+          id={"map"}
+          ref={"map"}
+          onLoad={this.addLines}
+          mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
+          mapboxApiAccessToken={mapboxToken}
+        >
+          {this.props.patientData.map((patient) => (
             <Marker
-              latitude={this.state.startingRNCoords.lat}
-              longitude={this.state.startingRNCoords.lng}
+              key={patient.pt_id}
+              latitude={patient.ptHomeLat}
+              longitude={patient.ptHomeLng}
               offsetLeft={-12}
               offsetTop={-24}
             >
               <svg
-                className="feather feather-truck"
+                className="marker"
                 style={{
-                  width: "24",
-                  height: "24",
+                  width: "24px",
+                  height: "24px",
                 }}
                 viewBox="0 0 24 24"
+                strokeWidth="3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                stroke="#ff6600"
-                strokeWidth="3"
               >
-                <rect x="1" y="3" width="15" height="13"></rect>
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-                <circle cx="5.5" cy="18.5" r="2.5"></circle>
-                <circle cx="18.5" cy="18.5" r="2.5"></circle>
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
               </svg>
             </Marker>
-          </ReactMapGL>
-        </>
-      );
-    }
-  
+          ))}
+          <Marker
+            latitude={this.state.startingRNCoords.lat}
+            longitude={this.state.startingRNCoords.lng}
+            offsetLeft={-12}
+            offsetTop={-24}
+          >
+            <svg
+              className="feather feather-truck"
+              style={{
+                width: "24",
+                height: "24",
+              }}
+              viewBox="0 0 24 24"
+              fill="none"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              stroke="#ff6600"
+              strokeWidth="3"
+            >
+              <rect x="1" y="3" width="15" height="13"></rect>
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+              <circle cx="5.5" cy="18.5" r="2.5"></circle>
+              <circle cx="18.5" cy="18.5" r="2.5"></circle>
+            </svg>
+          </Marker>
+        </ReactMapGL>
+      </>
+    );
+  }
 }
 
 function mapStateToProps(state) {
