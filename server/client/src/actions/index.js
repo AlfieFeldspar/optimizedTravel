@@ -6,6 +6,7 @@ export const FETCH_OPTIMIZED_ROUTE_LEG2 = "FETCH_OPTIMIZED_ROUTE_LEG2";
 export const CHANGE_PATIENT_PRIORITY = "CHANGE_PATIENT_PRIORITY";
 export const FETCH_ALL_NURSES = 
 "FETCH_ALL_NURSES";
+export const  FETCH_NURSE_BY_ID = "FETCH_NURSE_BY_ID";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -24,6 +25,16 @@ export function fetchAllNurses() {
   const request = axios.get(`${ROOT_URL}/nurses`);
   return {
     type: FETCH_ALL_NURSES,
+    payload: request,
+  };
+}
+
+export function fetchNurseById() {
+  const request = axios.get(`${ROOT_URL}/nurses/:rnId`);
+  console.log("In action fetching RN by ID")
+  console.log(request)
+  return {
+    type: FETCH_NURSE_BY_ID,
     payload: request,
   };
 }

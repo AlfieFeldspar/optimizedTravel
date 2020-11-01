@@ -1,10 +1,12 @@
 import React, { Component } from "react";
-import { BrowserRouter as Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchAllNurses, fetchPatientPoints } from "../actions/index";
+import {
+  fetchAllNurses,
+  fetchPatientPoints,
+  fetchNurseById,
+} from "../actions/index";
 import "bootstrap/dist/css/bootstrap.min.css";
-import App from '../components/App'
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
@@ -16,11 +18,11 @@ class LaunchPage extends Component {
       active_rn_Id: null,
       active_rn_name: "",
       startingLocation: "",
-      startingRNCoords_lat: 35.996, 
+      startingRNCoords_lat: 35.996,
       startingRNCoords_lng: -78.9014,
-    }
+    };
   }
-  
+
   componentDidMount() {
     this.props.fetchAllNurses();
   }
@@ -32,23 +34,41 @@ class LaunchPage extends Component {
     });
     let rn_fullName =
     selectedNurseData.rnFirstName + " " + selectedNurseData.rnLastName;
-    this.setState({ active_rn_Id: selectedNurseData.rn_Id, active_rn_name: rn_fullName });
+    this.setState({
+      active_rn_Id: selectedNurseData.rn_Id,
+      active_rn_name: rn_fullName,
+    });
   };
 
   departureSelectHandler = (e) => {
     // grab active nurse from the state
     let selectedNurseId = this.state.active_rn_Id;
     // find their data from props
-    let selectedNurseData = this.props.allNurses.find(nurse => {
+    let selectedNurseData = this.props.allNurses.find((nurse) => {
       return nurse.rn_Id === selectedNurseId;
-    })
+    });
+    console.log("nurseID",selectedNurseId)
+    this.props.fetchNurseById(selectedNurseId);
+    setTimeout(() => {
+      console.log("timeout!");
+      console.log(this.props.oneNurseById);
+    }, 1000);
+
     // set state according to Home or Office starting point
     if (e === "Home") {
-      this.setState({startingLocation: e, startingRNCoords_lat: selectedNurseData.rnHomeLat, startingRNCoords_lng: selectedNurseData.rnHomeLng})
+      this.setState({
+        startingLocation: e,
+        startingRNCoords_lat: selectedNurseData.rnHomeLat,
+        startingRNCoords_lng: selectedNurseData.rnHomeLng,
+      });
     } else if (e === "Office") {
-      this.setState({startingLocation: e, startingRNCoords_lat: selectedNurseData.rnOfficeLat, startingRNCoords_lng: selectedNurseData.rnOfficeLng})
+      this.setState({
+        startingLocation: e,
+        startingRNCoords_lat: selectedNurseData.rnOfficeLat,
+        startingRNCoords_lng: selectedNurseData.rnOfficeLng,
+      });
     }
-  }
+  };
 
   nurseAndLocationClickHandler = () => {
     // Make sure Id is an interger
@@ -58,10 +78,10 @@ class LaunchPage extends Component {
     // ensure all props are back
     setTimeout(() => {
       console.log("timeout!");
-      console.log(this.props.patientData)      
+      console.log(this.props.patientData);
     }, 1000);
     // Route to the map and table
-    this.props.history.push('/app');
+    this.props.history.push("/app");
   };
 
   render() {
@@ -120,12 +140,16 @@ class LaunchPage extends Component {
 function mapStateToProps(state) {
   return {
     allNurses: state.allNurses,
-    patientData: state.patientData
+    patientData: state.patientData,
+    oneNurseById: state.oneNurseById,
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchAllNurses, fetchPatientPoints }, dispatch);
+  return bindActionCreators(
+    { fetchAllNurses, fetchPatientPoints, fetchNurseById },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LaunchPage);

@@ -116,3 +116,9 @@ body {
   font-size: 12pt;
   text-decoration: underline;
 }
+
+.patient-table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+}

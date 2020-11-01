@@ -32,13 +32,26 @@ router.get("/patients", (request, response, next) => {
   });
 });
 
-// endpoint for grabbing one nurse by rn_Id
-router.get("/nurses/:rn_Id", (request, response, next) => {
+// endpoint for grabbing all nurses
+router.get("/nurses", (request, response, next) => {
   // Query the pool
-  pool.query("select rnLastName, rnOfficeLng, rnOfficeLat, rnHomeLng, rnHomeLat from rnTable", (error, results, fields) => {
+  pool.query("select * from rnTable", (error, results, fields) => {
     // Handle error after the release.
     if (error) throw error;
     // send newUser to front end
+    response.send(results);
+  });
+});
+
+// endpoint for grabbing one nurse by rn_Id
+router.get("/nurses/:rnId", (request, response, next) => {
+  console.log("in endpoint!")
+  // Query the pool
+  pool.query("SELECT rnLastName, rnOfficeLng, rnOfficeLat, rnHomeLng, rnHomeLat from rnTable WHERE rn_Id = ?", request.params.rnId, (error, results, fields) => {
+    // Handle error after the release.
+    if (error) throw error;
+    // send newUser to front end
+    console.log("in endpoint results:", results)
     response.send(results);
   });
 });

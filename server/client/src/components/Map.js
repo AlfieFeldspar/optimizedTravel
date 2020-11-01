@@ -45,7 +45,7 @@ class Map extends Component {
         longitude: -78.928621,
         zoom: 9,
         width: "100vw",
-        height: "50vh",
+        height: "60vh",
         display: "block",
       },
     };
@@ -191,6 +191,7 @@ function mapStateToProps(state) {
     patientData: state.patientData,
     routeLeg1: state.routeLeg1,
     routeLeg2: state.routeLeg2,
+    oneNurseById: state.oneNurseById,
   };
 }
 

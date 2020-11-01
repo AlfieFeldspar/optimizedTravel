@@ -25,7 +25,7 @@ class PatientList extends Component {
             <th scope="col">Priority</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="patient-table">
           {this.props.patientData.map((patient) => (
             <tr className="row-sm-3 patient-row" key={patient.pt_Id}>
               <th scope="col" className="patient-name">
@@ -63,6 +63,7 @@ class PatientList extends Component {
 function mapStateToProps(state) {
   return {
     patientData: state.patientData,
+    oneNurseById: state.oneNurseById,
   };
 }
 
