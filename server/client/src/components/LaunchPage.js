@@ -51,17 +51,17 @@ class LaunchPage extends Component {
   }
 
   nurseAndLocationClickHandler = () => {
-    console.log("clicked");
-    console.log(this.state.active_rn_Id);
+    // Make sure Id is an interger
     let integer_rn_Id = parseInt(this.state.active_rn_Id);
-    console.log(integer_rn_Id)
+    // Fetch points for the nurse's patients - add to props
     this.props.fetchPatientPoints(integer_rn_Id);
     // ensure all props are back
     setTimeout(() => {
       console.log("timeout!");
       console.log(this.props.patientData)      
     }, 1000);
-    // this.props.history.push('/app');
+    // Route to the map and table
+    this.props.history.push('/app');
   };
 
   render() {

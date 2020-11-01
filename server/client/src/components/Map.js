@@ -41,9 +41,9 @@ class Map extends Component {
         lng: -78.9371,
       },
       viewport: {
-        latitude: 35.989341,
-        longitude: -78.926232,
-        zoom: 10,
+        latitude: 36.033376,
+        longitude: -78.928621,
+        zoom: 9,
         width: "100vw",
         height: "50vh",
         display: "block",

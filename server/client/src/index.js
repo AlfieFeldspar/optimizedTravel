@@ -21,8 +21,8 @@ ReactDOM.render(
           <Route exact path="/">
             <Redirect to="/launch" />
           </Route>
-          <Route exact path="/app" component={App} />
           <Route exact path="/launch" component={LaunchPage} />
+          <Route exact path="/app" component={App} />
         </Switch>
       </Fragment>
     </Router>
