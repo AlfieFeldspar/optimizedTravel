@@ -9,7 +9,7 @@ export const FETCH_ALL_NURSES =
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
-const ROOT_URL = "http://localhost:5000/api";
+const ROOT_URL = "http://localhost:4000/api";
 
 export function fetchPatientPoints(rn_Id) {
   const request = axios.get(`${ROOT_URL}/nursePatients/${rn_Id}`); //a promise
