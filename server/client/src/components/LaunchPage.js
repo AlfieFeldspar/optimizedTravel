@@ -33,7 +33,7 @@ class LaunchPage extends Component {
       return nurse.rn_Id === integer_e;
     });
     let rn_fullName =
-    selectedNurseData.rnFirstName + " " + selectedNurseData.rnLastName;
+      selectedNurseData.rnFirstName + " " + selectedNurseData.rnLastName;
     this.setState({
       active_rn_Id: selectedNurseData.rn_Id,
       active_rn_name: rn_fullName,
@@ -41,19 +41,10 @@ class LaunchPage extends Component {
   };
 
   departureSelectHandler = (e) => {
-    // grab active nurse from the state
-    let selectedNurseId = this.state.active_rn_Id;
-    // find their data from props
+    // find nurse data
     let selectedNurseData = this.props.allNurses.find((nurse) => {
-      return nurse.rn_Id === selectedNurseId;
+      return nurse.rn_Id === this.state.active_rn_Id;
     });
-    console.log("nurseID",selectedNurseId)
-    this.props.fetchNurseById(selectedNurseId);
-    setTimeout(() => {
-      console.log("timeout!");
-      console.log(this.props.oneNurseById);
-    }, 1000);
-
     // set state according to Home or Office starting point
     if (e === "Home") {
       this.setState({
@@ -79,6 +70,15 @@ class LaunchPage extends Component {
     setTimeout(() => {
       console.log("timeout!");
       console.log(this.props.patientData);
+    }, 1000);
+    // pass selected nurse data through props
+    console.log("nurseID", this.state.active_rn_Id);
+    this.props.fetchNurseById(
+      this.state.active_rn_Id,
+    );
+    setTimeout(() => {
+      console.log("timeout!");
+      console.log(this.props.oneNurseById);
     }, 1000);
     // Route to the map and table
     this.props.history.push("/app");

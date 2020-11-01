@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { changePatientPriority, fetchPatientPoints } from "../actions/index";
 import { bindActionCreators } from "redux";
+import {Link} from 'react-router-dom'
 
 class PatientList extends Component {
 
@@ -15,12 +16,15 @@ class PatientList extends Component {
     }, 100);
   };
 
+ 
+
   render() {
     return (
+      <>
       <table className="patient-table table-striped">
         <thead>
           <tr className="table-headers">
-            <th scope="col">Name</th>
+            <th scope="col">Patient</th>
             <th scope="col">Nursing Need</th>
             <th scope="col">Priority</th>
           </tr>
@@ -56,6 +60,10 @@ class PatientList extends Component {
           ))}
         </tbody>
       </table>
+      <Link to='/' className='link-go-home'>
+        Go Back
+      </Link>
+      </>
     );
   }
 }

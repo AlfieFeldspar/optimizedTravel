@@ -95,10 +95,16 @@ body {
   margin-left: 290px;
   margin-top: 2px;
   box-shadow: 2px 4px black;
+  cursor: pointer;
+
+}
+
+.link-go-home {
+  margin-left: 10px;
 }
 
 .patient-table {
-  font-family: "Cantarell";
+  /* font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif; */
   font-size: 10pt;
   font-weight: lighter;
   margin-left: 10px;
@@ -110,6 +116,7 @@ body {
   font-size: 10pt;
   font-weight: bold;
   border-color: slategrey;
+  cursor: pointer;
 }
 
 .table-headers {
@@ -120,5 +127,5 @@ body {
 .patient-table {
   margin-left: auto;
   margin-right: auto;
-  margin-top: 20px;
+  margin-top: 10px;
 }

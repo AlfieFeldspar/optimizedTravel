@@ -29,8 +29,8 @@ export function fetchAllNurses() {
   };
 }
 
-export function fetchNurseById() {
-  const request = axios.get(`${ROOT_URL}/nurses/:rnId`);
+export function fetchNurseById(rnID) {
+  const request = axios.get(`${ROOT_URL}/nurses/${rnID}`);
   console.log("In action fetching RN by ID")
   console.log(request)
   return {

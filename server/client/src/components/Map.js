@@ -51,6 +51,10 @@ class Map extends Component {
     };
   }
 
+  componentDidMount() {
+    console.log("mounting!");
+  }
+
   btnClickHandler = () => {
     console.log("clicked!");
     // Compile the RN starting coordinates into an array
