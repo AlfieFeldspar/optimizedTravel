@@ -34,23 +34,17 @@ class LaunchPage extends Component {
           id="dropdown-menu-align-right"
           onSelect={this.nameSelectHandler}
             >
-              <Dropdown.Item eventKey="option-1">option-1</Dropdown.Item>
-              <Dropdown.Item eventKey="option-2">option-2</Dropdown.Item>
-              <Dropdown.Item eventKey="option-3">option 3</Dropdown.Item>
+              <Dropdown.Item eventKey="1">Margo Beasley</Dropdown.Item>
+              <Dropdown.Item eventKey="2">Elizabeth Jennings</Dropdown.Item>
+              <Dropdown.Item eventKey="3">Mark Jones</Dropdown.Item>
+              <Dropdown.Item eventKey="4">Stephen Kimmel</Dropdown.Item>
+              <Dropdown.Item eventKey="5">Wendy Rhodes</Dropdown.Item>
+              <Dropdown.Item eventKey="6">Philip Thorpe</Dropdown.Item>
+
               <Dropdown.Divider />
               <Dropdown.Item eventKey="some link">some link</Dropdown.Item>
       </DropdownButton>
-          {/* <div className="col-sm-4 row">
-            <select className="form-control ddform" id="dd-select">
-              <option value="">-- Select --</option>
-              <option onSelect={this.nameSelectHandler(UIEvent)} value="1">Margo Beasley</option>
-              <option value="2">Elizabeth Jennings</option>
-              <option value="3">Mark Jones</option>
-              <option value="4">Stephen Kimmel</option>
-              <option value="5">Wendy Rhodes</option>
-              <option value="6">Philip Thorpe</option>
-            </select> */}
-          {/* </div> */}
+
         <image className="img-roads" src="optimizedTravel/server/client/src/components/assets/cartoon-seamless-pattern-cars-trees-roads-road-signs-37018953.jpg" />
       </div>
     );
