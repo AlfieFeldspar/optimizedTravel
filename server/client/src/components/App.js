@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+
 import Map from "../components/Map";
 import PatientList from "../components/PatientList";
 import {fetchPatientPoints} from '../actions';

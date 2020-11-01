@@ -8,12 +8,9 @@ class PatientList extends Component {
   handlePriorityChange = (event, pt_Id) => {
     let priority;
     console.log("clicked!", event.target.value);
-    console.log("Pt in event handler", pt_Id);
     event.target.value === "Low" ? (priority = "High") : (priority = "Low");
-    console.log("target", event.target.value, "priority", priority);
     changePatientPriority(pt_Id, priority);
     setTimeout(() => {
-      console.log("This will run after half a second!");
       this.props.fetchPatientPoints(1);
     }, 100);
   };
@@ -66,7 +63,6 @@ class PatientList extends Component {
 function mapStateToProps(state) {
   return {
     patientData: state.patientData,
-    changedPtPriority: state.changedPtPriority,
   };
 }
 

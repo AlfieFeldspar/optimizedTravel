@@ -10,21 +10,24 @@ import {
 } from "../actions";
 
 const lineFeature = {
-    type: "LineString",
-    coordinates: [],
+  type: "LineString",
+  coordinates: [
+    [-78.937101, 35.928519],
+    [-78.961402, 35.918854],
+    [-79.022309, 36.033799],
+    [-78.937101, 35.928519],
+  ],
 };
 
 const lineLayer = {
   layout: {
-    "line-join": "round",
-    "line-cap": "round",
+    lineJoin: "round",
   },
   paint: {
-    "line-color": "#888",
-    "line-width": 8,
+    lineColor: "green",
+    lineWidth: 8,
   },
-}
-
+};
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -87,19 +90,19 @@ class Map extends Component {
     // Ensure all props are back
     setTimeout(() => {
       // Merge all coords into one trip
-      console.log("timeout!")
+      console.log("timeout!");
       let fullTrip = [...this.props.routeLeg1.coordinates];
       let leg2 = [...this.props.routeLeg2.coordinates];
-      leg2.forEach(pair => {
-        return fullTrip.push(pair)
-      })
+      leg2.forEach((pair) => {
+        return fullTrip.push(pair);
+      });
       lineFeature.coordinates.push(fullTrip);
-      console.log("linefeature", lineFeature)
+      console.log("linefeature", lineFeature);
+      debugger;
     }, 1000);
 
     // SO NOW DISPLAY THE LINE!
-  }
-  
+  };
 
   render() {
     return (
