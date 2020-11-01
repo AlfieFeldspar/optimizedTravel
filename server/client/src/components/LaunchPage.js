@@ -8,6 +8,16 @@ import Dropdown from 'react-bootstrap/Dropdown'
 
 
 class LaunchPage extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      rn_Id: 1,
+      startingRNCoords: {
+        lat: 35.9285,
+        lng: -78.9371,
+      },
+    }
+
   componentDidMount() {
     this.props.fetchAllNurses();
   }
@@ -21,6 +31,9 @@ class LaunchPage extends Component {
     // console.log("value",result)
   }
   
+  departureSelectHandler = (e) => {
+    console.log(e)
+  }
  
 
   render() {
@@ -40,9 +53,18 @@ class LaunchPage extends Component {
               <Dropdown.Item eventKey="4">Stephen Kimmel</Dropdown.Item>
               <Dropdown.Item eventKey="5">Wendy Rhodes</Dropdown.Item>
               <Dropdown.Item eventKey="6">Philip Thorpe</Dropdown.Item>
+      </DropdownButton>
 
-              <Dropdown.Divider />
-              <Dropdown.Item eventKey="some link">some link</Dropdown.Item>
+      <h4 className="name-select">Pick your starting location (home or office)</h4>
+        <DropdownButton
+          alignRight
+          title="Dropdown right"
+          id="dropdown-menu-align-right"
+          onSelect={this.departureSelectHandler}
+            >
+              <Dropdown.Item eventKey="1-home">Home</Dropdown.Item>
+              <Dropdown.Item eventKey="2-office">Office</Dropdown.Item>
+
       </DropdownButton>
 
         <image className="img-roads" src="optimizedTravel/server/client/src/components/assets/cartoon-seamless-pattern-cars-trees-roads-road-signs-37018953.jpg" />
