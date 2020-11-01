@@ -43,11 +43,11 @@ router.get("/nurses", (request, response, next) => {
   });
 });
 
-router.get("/nursePatients/:nurse", (request, response, next) => {
+router.get("/nursePatients/:rn_Id", (request, response, next) => {
   // Query the pool
   pool.query(
-    "SELECT ptTable.pt_Id, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority, ptTable.ptFirstName, ptTable.ptLastName FROM ptTable INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
-    request.params.nurse,
+    "SELECT ptTable.pt_Id, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority, ptTable.ptFirstName, ptTable.ptLastName FROM ptTable  INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
+    request.params.rn_Id,
     (error, results, fields) => {
       // Handle error after the release.
       if (error) throw error;

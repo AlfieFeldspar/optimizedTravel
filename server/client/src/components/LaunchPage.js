@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { BrowserRouter as Redirect } from "react-router-dom";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { fetchAllNurses } from "../actions/index";
+import { fetchAllNurses, fetchPatientPoints } from "../actions/index";
 import "bootstrap/dist/css/bootstrap.min.css";
+import App from '../components/App'
 import DropdownButton from "react-bootstrap/DropdownButton";
 import Dropdown from "react-bootstrap/Dropdown";
 import Button from "react-bootstrap/Button";
@@ -49,6 +51,16 @@ class LaunchPage extends Component {
 
   nurseAndLocationClickHandler = () => {
     console.log("clicked");
+    console.log(this.state.active_rn_Id);
+    let integer_rn_Id = parseInt(this.state.active_rn_Id);
+    console.log(integer_rn_Id)
+    this.props.fetchPatientPoints(integer_rn_Id);
+    // ensure all props are back
+    setTimeout(() => {
+      console.log("timeout!");
+      console.log(this.props.patientData)      
+    }, 1000);
+    // this.props.history.push('/app');
   };
 
   render() {
@@ -107,11 +119,12 @@ class LaunchPage extends Component {
 function mapStateToProps(state) {
   return {
     allNurses: state.allNurses,
+    patientData: state.patientData
   };
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchAllNurses }, dispatch);
+  return bindActionCreators({ fetchAllNurses, fetchPatientPoints }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LaunchPage);

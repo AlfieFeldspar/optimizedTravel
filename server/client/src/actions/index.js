@@ -12,6 +12,7 @@ const mapboxToken =
 const ROOT_URL = "http://localhost:4000/api";
 
 export function fetchPatientPoints(rn_Id) {
+  console.log("in action to fetch points")
   const request = axios.get(`${ROOT_URL}/nursePatients/${rn_Id}`); //a promise
   return {
     type: FETCH_PATIENT_POINTS, //the action name"
