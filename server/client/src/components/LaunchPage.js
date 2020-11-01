@@ -26,8 +26,9 @@ class LaunchPage extends Component {
   }
 
   nameSelectHandler = (e) => {
+    let integer_e = parseInt(e);
     let selectedNurseData = this.props.allNurses.find((nurse) => {
-      return nurse.rn_Id == e;
+      return nurse.rn_Id === integer_e;
     });
     let rn_fullName =
     selectedNurseData.rnFirstName + " " + selectedNurseData.rnLastName;
@@ -39,7 +40,7 @@ class LaunchPage extends Component {
     let selectedNurseId = this.state.active_rn_Id;
     // find their data from props
     let selectedNurseData = this.props.allNurses.find(nurse => {
-      return nurse.rn_Id == selectedNurseId;
+      return nurse.rn_Id === selectedNurseId;
     })
     // set state according to Home or Office starting point
     if (e === "Home") {
