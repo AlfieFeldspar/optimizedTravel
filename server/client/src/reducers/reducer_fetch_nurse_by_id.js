@@ -1,9 +1,9 @@
-import { CHANGE_PATIENT_PRIORITY } from '../actions/index';
+import { FETCH_NURSE_BY_ID } from '../actions/index';
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default function (state = [], action) {
+export default function (state = {}, action) {
   switch (action.type) {
-    case CHANGE_PATIENT_PRIORITY:
+    case FETCH_NURSE_BY_ID:
       return action.payload.data;
     default:
       return state;
