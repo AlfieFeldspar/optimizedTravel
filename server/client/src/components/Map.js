@@ -1,7 +1,11 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
+import DeckGL from "@deck.gl/react";
+// import DeckGL {PathLayer} from 'deck.gl';
+// import {GeoJsonLayer} from '@deck.gl/layers';
+import { PathLayer } from "@deck.gl/layers";
 
 import {
   fetchOptimizedRouteLeg1,
@@ -11,28 +15,14 @@ import {
 
 const lineFeature = {
   type: "LineString",
-  coordinates: [
-    [-78.937101, 35.928519],
-    [-78.961402, 35.918854],
-    [-79.022309, 36.033799],
-    [-78.937101, 35.928519],
-  ],
-};
-
-const lineLayer = {
-  layout: {
-    lineJoin: "round",
-  },
-  paint: {
-    lineColor: "green",
-    lineWidth: 8,
-  },
+  path: [],
+  color: [255, 0, 0],
 };
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 
-class Map extends Component {
+class Map extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -51,12 +41,10 @@ class Map extends Component {
     };
   }
 
-  componentDidMount() {
-    console.log("mounting!");
-  }
-
   btnClickHandler = () => {
     console.log("clicked!");
+   
+
     // Compile the RN starting coordinates into an array
     const startCoordsLeg1 = [
       this.state.startingRNCoords.lng,
@@ -100,15 +88,27 @@ class Map extends Component {
       leg2.forEach((pair) => {
         return fullTrip.push(pair);
       });
-      lineFeature.coordinates.push(fullTrip);
+      lineFeature.path.push(fullTrip);
       console.log("linefeature", lineFeature);
-      debugger;
     }, 1000);
+    return lineFeature;
+   
 
-    // SO NOW DISPLAY THE LINE!
   };
 
   render() {
+    const layer = new PathLayer({
+      id: "path-layer",
+      data: lineFeature,
+      pickable: true,
+      widthScale: 20,
+      widthMinPixels: 2,
+      getPath: (d) => d.path,
+      getLineColor: (d) => [255, 0, 0],
+      getWidth: (d) => 5,
+    });
+    console.log("in render layer",layer)
+    debugger;
     return (
       <>
         <div>
@@ -179,11 +179,7 @@ class Map extends Component {
               <circle cx="18.5" cy="18.5" r="2.5"></circle>
             </svg>
           </Marker>
-          {lineFeature && (
-            <Source type="geojson" data={lineFeature}>
-              <Layer {...lineLayer}></Layer>
-            </Source>
-          )}
+          <DeckGL {...this.state.viewport} layers={[layer]} />;
         </ReactMapGL>
       </>
     );

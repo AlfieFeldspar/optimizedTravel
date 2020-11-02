@@ -45,13 +45,11 @@ router.get("/nurses", (request, response, next) => {
 
 // endpoint for grabbing one nurse by rn_Id & starting location
 router.get("/nurses/:rnId", (request, response, next) => {
-  console.log("in endpoint!")
   // Query the pool
   pool.query("SELECT rnLastName, rnHomeLng, rnHomeLat, rnOfficeLng, rnOfficeLat FROM rnTable WHERE rn_Id = ?", [request.params.rnId], (error, results, fields) => {
     // Handle error after the release.
     if (error) throw error;
     // send newUser to front end
-    console.log("in endpoint results:", results)
     response.send(results);
   });
 });

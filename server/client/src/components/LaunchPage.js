@@ -91,7 +91,7 @@ class LaunchPage extends Component {
           Traveling Nurse Route Planner - Welcome!
         </div>
         <DropdownButton
-          alignCenter
+          aligncenter="true"
           title="Your name"
           id="dropdown-menu-align-center"
           className="ddform-name"
@@ -109,7 +109,7 @@ class LaunchPage extends Component {
         </p>
 
         <DropdownButton
-          alignCenter
+          aligncenter="true"
           title="Your starting location"
           id="dropdown-menu-align-center"
           className="ddform-start"
