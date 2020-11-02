@@ -26,9 +26,13 @@ if (process.env.NODE_ENV === 'production') {
   app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   });
+  // For use with React Router and Redux and Express
+  app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'))
+  })
 }
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`Listening on port ${port}`);

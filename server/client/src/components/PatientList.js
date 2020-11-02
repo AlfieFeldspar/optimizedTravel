@@ -2,28 +2,28 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { changePatientPriority, fetchPatientPoints } from "../actions/index";
 import { bindActionCreators } from "redux";
+import {Link} from 'react-router-dom'
 
 class PatientList extends Component {
-
+  // Handler for patient priority change low/high or high/low
   handlePriorityChange = (event, pt_Id) => {
     let priority;
-    console.log("clicked!", event.target.value);
-    console.log("Pt in event handler", pt_Id);
     event.target.value === "Low" ? (priority = "High") : (priority = "Low");
-    console.log("target", event.target.value, "priority", priority);
+    // Change the data on the backend 
     changePatientPriority(pt_Id, priority);
+    // Timeout to make sure data is updated, then fetch the updated patient data
     setTimeout(() => {
-      console.log("This will run after half a second!");
       this.props.fetchPatientPoints(1);
     }, 100);
   };
 
-  render() {
+   render() {
     return (
+      <>
       <table className="patient-table table-striped">
         <thead>
           <tr className="table-headers">
-            <th scope="col">Name</th>
+            <th scope="col">Patient</th>
             <th scope="col">Nursing Need</th>
             <th scope="col">Priority</th>
           </tr>
@@ -42,7 +42,7 @@ class PatientList extends Component {
                   input
                   type="button"
                   value={patient.visitPriority}
-                  className="btn priority-button"
+                  className="btn btn-sm"
                   style={
                     patient.visitPriority === "High"
                       ? { color: "red" }
@@ -59,6 +59,10 @@ class PatientList extends Component {
           ))}
         </tbody>
       </table>
+      <Link to='/' className='link-go-home'>
+        Go Back
+      </Link>
+      </>
     );
   }
 }
@@ -66,7 +70,7 @@ class PatientList extends Component {
 function mapStateToProps(state) {
   return {
     patientData: state.patientData,
-    changedPtPriority: state.changedPtPriority,
+    oneNurseById: state.oneNurseById,
   };
 }
 

@@ -4,28 +4,55 @@ export const FETCH_PATIENT_POINTS = "FETCH_PATIENT_POINTS ";
 export const FETCH_OPTIMIZED_ROUTE_LEG1 = "FETCH_OPTIMIZED_ROUTE_LEG1";
 export const FETCH_OPTIMIZED_ROUTE_LEG2 = "FETCH_OPTIMIZED_ROUTE_LEG2";
 export const CHANGE_PATIENT_PRIORITY = "CHANGE_PATIENT_PRIORITY";
+export const FETCH_ALL_NURSES = 
+"FETCH_ALL_NURSES";
+export const  FETCH_NURSE_BY_ID = "FETCH_NURSE_BY_ID";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
-const ROOT_URL = "http://localhost:5000/api";
+const ROOT_URL = "http://localhost:4000/api";
 
 export function fetchPatientPoints(rn_Id) {
-  const request = axios.get(`${ROOT_URL}/patients/${rn_Id}`); //a promise
+  const request = axios.get(`${ROOT_URL}/nursePatients/${rn_Id}`); //a promise
   return {
     type: FETCH_PATIENT_POINTS, //the action name"
     payload: request, //api call
   };
 }
+
+export function fetchAllNurses() {
+  const request = axios.get(`${ROOT_URL}/nurses`);
+  return {
+    type: FETCH_ALL_NURSES,
+    payload: request,
+  };
+}
+
+export function fetchNurseById(rnID) {
+  const request = axios.get(`${ROOT_URL}/nurses/${rnID}`);
+  return {
+    type: FETCH_NURSE_BY_ID,
+    payload: request,
+  };
+}
+
+export function changePatientPriority(patientId, priority) {
+  const request = axios.post(`${ROOT_URL}/patients/${patientId}/priority/${priority}`); //a promise
+  return {
+    type: CHANGE_PATIENT_PRIORITY, //the action name"
+    payload: request, //api call
+  };
+}
+
+
 // function inputs [-27.2345,-7.2345], [[27.2345,-27.2345],[27.2345,-27.2345]], [27.2345,-27.2345]
 // Needed: lng,lat;lng,lat
 export function fetchOptimizedRouteLeg1(start, middle, end) {
-  console.log("In actions to fetch route1");
   const inputCoordSequence = [start];
   inputCoordSequence.push(...middle);
   inputCoordSequence.push(end);
   // current condition [[-27.2345,-7.2345], [27.2345,-27.2345],[27.2345,-27.2345], [27.2345,-27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
-
   const request = axios.get(
     `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`
   );
@@ -36,14 +63,11 @@ export function fetchOptimizedRouteLeg1(start, middle, end) {
 }
 
 export function fetchOptimizedRouteLeg2(start, middle, end) {
-  console.log("In actions to fetch route2");
   const inputCoordSequence = [start];
-  console.log("middle coords", middle);
   inputCoordSequence.push(...middle);
   inputCoordSequence.push(end);
   // current condition [[-27.2345,-7.2345], [27.2345,-27.2345],[27.2345,-27.2345], [27.2345,-27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
-  console.log("coords Leg2", coords);
   const request = axios.get(
     `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`
   );
@@ -63,15 +87,4 @@ function stringifyCoordSequence(nestedArrayofCoordPairs) {
       return stringifyCoordPair(element);
     })
     .join(";");
-}
-
-export function changePatientPriority(patientId, priority) {
-  console.log("getting ready to change priority!");
-  console.log("priority", priority)
-  const request = axios.post(`${ROOT_URL}/patients/${patientId}/priority/${priority}`); //a promise
-  return {
-    type: CHANGE_PATIENT_PRIORITY, //the action name"
-    payload: request, //api call
-  };
-}
-
+  }

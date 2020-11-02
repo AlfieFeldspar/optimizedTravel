@@ -1,21 +1,31 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React, { Fragment } from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
-import ReduxPromise from 'redux-promise';
-import './index.css';
-import App from './components/App';
+import ReduxPromise from "redux-promise";
+import "./index.css";
 import reducers from "./reducers";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import './index.css';
-
+import App from "./components/App";
+import LaunchPage from "./components/LaunchPage";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
 
 const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
+    <Router>
+      <Fragment>
+        <Switch>
+          <Route exact path="/">
+            <Redirect to="/launch" />
+          </Route>
+          <Route exact path="/launch" component={LaunchPage} />
+          <Route exact path="/app" component={App} />
+        </Switch>
+      </Fragment>
+    </Router>
   </Provider>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
