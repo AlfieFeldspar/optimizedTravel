@@ -82,25 +82,19 @@ class Map extends Component {
     // Ensure all props are back
     setTimeout(() => {
       // Merge all coords into one trip
-      // Format as nested array [[lng,lat],[lng,lat]]
-
-      console.log("let1coords", this.props.routeLeg1.coordinates);
-      console.log("let2coords", this.props.routeLeg2.coordinates);
-
+      // Format as nested array [[lng,lat],[lng,lat]
       let fullTrip = [...this.props.routeLeg1.coordinates];
       let leg2 = [...this.props.routeLeg2.coordinates];
       leg2.forEach((pair) => {
         return fullTrip.push(pair);
       });
       lineFeature.path.push(fullTrip);
+      console.log("fulltrip=PATH in lineFeature", fullTrip)
     }, 3000);
-    console.log("linefeature", lineFeature);
     this.setState({ lineFeature: lineFeature });
-    return lineFeature;
   };
 
   render() {
-    console.log("in render linefeature", lineFeature);
     return (
       <>
         <div>
