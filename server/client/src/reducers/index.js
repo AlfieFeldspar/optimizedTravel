@@ -5,6 +5,7 @@ import OptimizedRouteReducerLeg2 from "./reducer_optimized_route_leg2";
 import ChangePatientPriorityReducer from "./reducer_change_pt_priority"; 
 import FetchAllNursesReducer from "./reducer_fetch_nurses";
 import FetchNurseById from "./reducer_fetch_nurse_by_id";
+import SendNurseCoords from "./reducer_nurse_coords";
 
 const rootReducer = combineReducers({
   patientData: PatientPointsReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   changedPtPriority: ChangePatientPriorityReducer,
   allNurses: FetchAllNursesReducer,
   oneNurseById: FetchNurseById,
+  nurseCoords: SendNurseCoords,
 });
 
 export default rootReducer;

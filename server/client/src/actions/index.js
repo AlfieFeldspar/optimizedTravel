@@ -7,6 +7,7 @@ export const CHANGE_PATIENT_PRIORITY = "CHANGE_PATIENT_PRIORITY";
 export const FETCH_ALL_NURSES = 
 "FETCH_ALL_NURSES";
 export const  FETCH_NURSE_BY_ID = "FETCH_NURSE_BY_ID";
+export const SEND_NURSE_COORDS = "SEND_NURSE_COORDS";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -44,14 +45,19 @@ export function changePatientPriority(patientId, priority) {
   };
 }
 
-
+export function sendNurseStartingCoords(lng,lat,loc) {
+  return{
+    type: SEND_NURSE_COORDS,
+    payload: {lng: lng, lat: lat, loc:loc}
+  }
+}
 // function inputs [-27.2345,-7.2345], [[27.2345,-27.2345],[27.2345,-27.2345]], [27.2345,-27.2345]
 // Needed: lng,lat;lng,lat
 export function fetchOptimizedRouteLeg1(start, middle, end) {
   const inputCoordSequence = [start];
   inputCoordSequence.push(...middle);
   inputCoordSequence.push(end);
-  // current condition [[-27.2345,-7.2345], [27.2345,-27.2345],[27.2345,-27.2345], [27.2345,-27.2345]]
+  // current condition [[-27.2345,7.2345], [-27.2345,27.2345],[-27.2345,7.2345], [-27.2345,27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
   const request = axios.get(
     `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`

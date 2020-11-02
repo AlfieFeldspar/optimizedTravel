@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { changePatientPriority, fetchPatientPoints } from "../actions/index";
 import { bindActionCreators } from "redux";
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
+
 
 class PatientList extends Component {
   // Handler for patient priority change low/high or high/low
@@ -10,10 +11,10 @@ class PatientList extends Component {
     let priority;
     event.target.value === "Low" ? (priority = "High") : (priority = "Low");
     // Change the data on the backend 
-    changePatientPriority(pt_Id, priority);
+    this.props.changePatientPriority(pt_Id, priority);
     // Timeout to make sure data is updated, then fetch the updated patient data
     setTimeout(() => {
-      this.props.fetchPatientPoints(1);
+       this.props.fetchPatientPoints(this.props.oneNurseById[0].rn_Id);
     }, 100);
   };
 
@@ -28,6 +29,7 @@ class PatientList extends Component {
             <th scope="col">Priority</th>
           </tr>
         </thead>
+        
         <tbody>
           {this.props.patientData.map((patient) => (
             <tr className="row-sm-3 patient-row" key={patient.pt_Id}>
@@ -59,9 +61,9 @@ class PatientList extends Component {
           ))}
         </tbody>
       </table>
-      <Link to='/' className='link-go-home'>
-        Go Back
-      </Link>
+      <Link to="/" className="link-go-home">
+            Logout
+          </Link>
       </>
     );
   }

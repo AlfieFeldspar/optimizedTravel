@@ -99,8 +99,9 @@ body {
 }
 
 .link-go-home {
-  margin-left: 10px;
+  margin-left: 310px;
   font-size: 12px;
+  color: red;
   z-index: 1 !important;
 }
 

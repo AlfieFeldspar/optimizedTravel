@@ -4,7 +4,7 @@ import { bindActionCreators } from "redux";
 import {
   fetchAllNurses,
   fetchPatientPoints,
-  fetchNurseById,
+  fetchNurseById, sendNurseStartingCoords,
 } from "../actions/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -18,8 +18,8 @@ class LaunchPage extends Component {
       active_rn_Id: null,
       active_rn_name: "",
       startingLocation: "",
-      startingRNCoords_lat: 35.996,
-      startingRNCoords_lng: -78.9014,
+      startingRNCoords_lat: null,
+      startingRNCoords_lng: null,
     };
   }
 
@@ -64,8 +64,8 @@ class LaunchPage extends Component {
         startingRNCoords_lng: selectedNurseData.rnOfficeLng,
       });
     }
+    this.props.sendNurseStartingCoords(this.state.startingRNCoords_lng, this.state.startingRNCoords_lat, this.state.startingLocation);
   };
-
   // Handler for "click to load patients"
   nurseAndLocationClickHandler = () => {
     // Make sure active_rn_Id is an interger
@@ -74,8 +74,12 @@ class LaunchPage extends Component {
     this.props.fetchPatientPoints(integer_rn_Id); 
     // Fetch patients for the active nurse
     this.props.fetchNurseById(
-      this.state.active_rn_Id,
-    );
+      this.state.active_rn_Id)
+    
+    setTimeout(() => {
+      console.log(this.props.nurseCoords)
+    }, 3000);
+    debugger;
     // Route to the map and table
     this.props.history.push("/app");
   };
@@ -141,12 +145,13 @@ function mapStateToProps(state) {
     allNurses: state.allNurses,
     patientData: state.patientData,
     oneNurseById: state.oneNurseById,
+    nurseCoords: state.nurseCoords
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchAllNurses, fetchPatientPoints, fetchNurseById },
+    { fetchAllNurses, fetchPatientPoints, fetchNurseById, sendNurseStartingCoords },
     dispatch
   );
 }

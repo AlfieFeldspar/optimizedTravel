@@ -43,10 +43,10 @@ router.get("/nurses", (request, response, next) => {
   });
 });
 
-// endpoint for grabbing one nurse by rn_Id & starting location
+// endpoint for grabbing one nurse by rn_Id 
 router.get("/nurses/:rnId", (request, response, next) => {
   // Query the pool
-  pool.query("SELECT rnLastName, rnHomeLng, rnHomeLat, rnOfficeLng, rnOfficeLat FROM rnTable WHERE rn_Id = ?", [request.params.rnId], (error, results, fields) => {
+  pool.query("SELECT rn_Id, rnLastName, rnHomeLng, rnHomeLat, rnOfficeLng, rnOfficeLat FROM rnTable WHERE rn_Id = ?", [request.params.rnId], (error, results, fields) => {
     // Handle error after the release.
     if (error) throw error;
     // send newUser to front end
