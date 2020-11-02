@@ -1,4 +1,7 @@
 # optimizedTravel
+
+CURRENT/ACTIVE BRANCH: simpleMapboxTry. NOT up to date with Main
+
 A full stack app to build optimized driving routes for traveling nurses.
 
 TODO
