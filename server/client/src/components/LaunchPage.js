@@ -27,21 +27,26 @@ class LaunchPage extends Component {
     this.props.fetchAllNurses();
   }
 
+  // Handler for the name dropdown. e=dropdown value, entered as rn_Id
   nameSelectHandler = (e) => {
     let integer_e = parseInt(e);
+    // Find the active nurse by Id
     let selectedNurseData = this.props.allNurses.find((nurse) => {
       return nurse.rn_Id === integer_e;
     });
+    // Concatenate name for display
     let rn_fullName =
       selectedNurseData.rnFirstName + " " + selectedNurseData.rnLastName;
+    // set Id and name to local state
     this.setState({
       active_rn_Id: selectedNurseData.rn_Id,
       active_rn_name: rn_fullName,
     });
   };
 
+  // Handler for the starting location dropdown
   departureSelectHandler = (e) => {
-    // find nurse data
+    // find nurse data again 
     let selectedNurseData = this.props.allNurses.find((nurse) => {
       return nurse.rn_Id === this.state.active_rn_Id;
     });
@@ -61,25 +66,16 @@ class LaunchPage extends Component {
     }
   };
 
+  // Handler for "click to load patients"
   nurseAndLocationClickHandler = () => {
-    // Make sure Id is an interger
+    // Make sure active_rn_Id is an interger
     let integer_rn_Id = parseInt(this.state.active_rn_Id);
     // Fetch points for the nurse's patients - add to props
-    this.props.fetchPatientPoints(integer_rn_Id);
-    // ensure all props are back
-    setTimeout(() => {
-      console.log("timeout!");
-      console.log(this.props.patientData);
-    }, 1000);
-    // pass selected nurse data through props
-    console.log("nurseID", this.state.active_rn_Id);
+    this.props.fetchPatientPoints(integer_rn_Id); 
+    // Fetch patients for the active nurse
     this.props.fetchNurseById(
       this.state.active_rn_Id,
     );
-    setTimeout(() => {
-      console.log("timeout!");
-      console.log(this.props.oneNurseById);
-    }, 1000);
     // Route to the map and table
     this.props.history.push("/app");
   };
@@ -97,6 +93,7 @@ class LaunchPage extends Component {
           className="ddform-name"
           onSelect={this.nameSelectHandler}
         >
+          {/* HARDCODED FOR NOW */}
           <Dropdown.Item eventKey="1">Margo Beasley</Dropdown.Item>
           <Dropdown.Item eventKey="2">Elizabeth Jennings</Dropdown.Item>
           <Dropdown.Item eventKey="3">Mark Jones</Dropdown.Item>
@@ -115,6 +112,7 @@ class LaunchPage extends Component {
           className="ddform-start"
           onSelect={this.departureSelectHandler}
         >
+          {/* HARDCODED FOR NOW */}
           <Dropdown.Item eventKey="Home">Home</Dropdown.Item>
           <Dropdown.Item eventKey="Office">Office</Dropdown.Item>
         </DropdownButton>
@@ -128,6 +126,7 @@ class LaunchPage extends Component {
         >
           Click to load patients
         </Button>
+        {/* The image footer */}
         <footer className="LaunchFooter">
           <div className="empty-container"></div>
           <div className="launch-image"></div>

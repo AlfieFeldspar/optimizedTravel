@@ -5,20 +5,19 @@ import { bindActionCreators } from "redux";
 import {Link} from 'react-router-dom'
 
 class PatientList extends Component {
-
+  // Handler for patient priority change low/high or high/low
   handlePriorityChange = (event, pt_Id) => {
     let priority;
-    console.log("clicked!", event.target.value);
     event.target.value === "Low" ? (priority = "High") : (priority = "Low");
+    // Change the data on the backend 
     changePatientPriority(pt_Id, priority);
+    // Timeout to make sure data is updated, then fetch the updated patient data
     setTimeout(() => {
       this.props.fetchPatientPoints(1);
     }, 100);
   };
 
- 
-
-  render() {
+   render() {
     return (
       <>
       <table className="patient-table table-striped">

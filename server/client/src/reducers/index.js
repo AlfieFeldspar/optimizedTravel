@@ -6,8 +6,6 @@ import ChangePatientPriorityReducer from "./reducer_change_pt_priority";
 import FetchAllNursesReducer from "./reducer_fetch_nurses";
 import FetchNurseById from "./reducer_fetch_nurse_by_id";
 
-console.log("in root reducer")
-
 const rootReducer = combineReducers({
   patientData: PatientPointsReducer,
   routeLeg1: OptimizedRouteReducerLeg1,

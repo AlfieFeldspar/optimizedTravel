@@ -3,9 +3,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
 import DeckGL from "@deck.gl/react";
-// import DeckGL {PathLayer} from 'deck.gl';
-// import {GeoJsonLayer} from '@deck.gl/layers';
 import { PathLayer } from "@deck.gl/layers";
+// import {GeoJsonLayer} from '@deck.gl/layers';
 
 import {
   fetchOptimizedRouteLeg1,
@@ -30,6 +29,7 @@ class Map extends PureComponent {
         lat: 35.9285,
         lng: -78.9371,
       },
+      lineFeature: {},
       viewport: {
         latitude: 36.033376,
         longitude: -78.928621,
@@ -41,10 +41,12 @@ class Map extends PureComponent {
     };
   }
 
+  // Handler for the routing button. It does too much!
+  // TODO: Make this a component?
   btnClickHandler = () => {
-    console.log("clicked!");
-   
+    // ALL STEPS BELOW are to process coordinate pairs into a nested array
 
+    // FOR LEG1: From RN to priority patient
     // Compile the RN starting coordinates into an array
     const startCoordsLeg1 = [
       this.state.startingRNCoords.lng,
@@ -54,15 +56,14 @@ class Map extends PureComponent {
     const endPatientLeg1 = this.props.patientData.find((patient) => {
       return patient.visitPriority === "High";
     });
-    // console.log("endPatientData",endPatientLeg1 );
     const endCoordsLeg1 = [endPatientLeg1.ptHomeLng, endPatientLeg1.ptHomeLat];
+    // Send start (RN starting point), middle (empty), & end (priority patient) to API
     this.props.fetchOptimizedRouteLeg1(
       startCoordsLeg1,
       middleCoords,
       endCoordsLeg1
     );
-
-    // grab details for second leg of route
+    // FOR LEG2: Start at priority patient, optimize to middle patients, end at RN starting poing
     const startCoordsLeg2 = endCoordsLeg1;
     const endCoordsLeg2 = startCoordsLeg1;
     const middlePatients = [];
@@ -78,37 +79,28 @@ class Map extends PureComponent {
       middlePatients,
       endCoordsLeg2
     );
-
     // Ensure all props are back
     setTimeout(() => {
       // Merge all coords into one trip
-      console.log("timeout!");
+      // Format as nested array [[lng,lat],[lng,lat]]
+      
+      console.log("let1coords" ,this.props.routeLeg1.coordinates)
+      console.log("let2coords" ,this.props.routeLeg2.coordinates)
+
       let fullTrip = [...this.props.routeLeg1.coordinates];
       let leg2 = [...this.props.routeLeg2.coordinates];
       leg2.forEach((pair) => {
         return fullTrip.push(pair);
       });
       lineFeature.path.push(fullTrip);
-      console.log("linefeature", lineFeature);
-    }, 1000);
+    }, 3000);
+    console.log('linefeature', lineFeature)
+    this.setState({lineFeature: lineFeature})
     return lineFeature;
-   
-
   };
 
   render() {
-    const layer = new PathLayer({
-      id: "path-layer",
-      data: lineFeature,
-      pickable: true,
-      widthScale: 20,
-      widthMinPixels: 2,
-      getPath: (d) => d.path,
-      getLineColor: (d) => [255, 0, 0],
-      getWidth: (d) => 5,
-    });
-    console.log("in render layer",layer)
-    debugger;
+    console.log("in render linefeature", lineFeature);
     return (
       <>
         <div>
@@ -117,9 +109,7 @@ class Map extends PureComponent {
             className="btn btn-primary btn-sm map-button"
             type="button"
             onClick={this.btnClickHandler}
-          >
-            Route
-          </button>
+          >Route</button>
         </div>
         <ReactMapGL
           {...this.state.viewport}
@@ -179,7 +169,18 @@ class Map extends PureComponent {
               <circle cx="18.5" cy="18.5" r="2.5"></circle>
             </svg>
           </Marker>
-          <DeckGL {...this.state.viewport} layers={[layer]} />;
+          <DeckGL
+            {...this.state.viewport}
+            layers={[
+              new PathLayer({
+                id: "path-layer",
+                data: this.state.lineFeature ? this.state.lineFeature : null,
+                strokeWidth: 3,
+                getPath: (d) => d.path,
+              }),
+            ]}
+          />
+          ;
         </ReactMapGL>
       </>
     );

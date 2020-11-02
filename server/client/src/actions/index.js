@@ -13,7 +13,6 @@ const mapboxToken =
 const ROOT_URL = "http://localhost:4000/api";
 
 export function fetchPatientPoints(rn_Id) {
-  console.log("in action to fetch points")
   const request = axios.get(`${ROOT_URL}/nursePatients/${rn_Id}`); //a promise
   return {
     type: FETCH_PATIENT_POINTS, //the action name"
@@ -31,8 +30,6 @@ export function fetchAllNurses() {
 
 export function fetchNurseById(rnID) {
   const request = axios.get(`${ROOT_URL}/nurses/${rnID}`);
-  console.log("In action fetching RN by ID")
-  console.log(request)
   return {
     type: FETCH_NURSE_BY_ID,
     payload: request,
@@ -51,7 +48,6 @@ export function changePatientPriority(patientId, priority) {
 // function inputs [-27.2345,-7.2345], [[27.2345,-27.2345],[27.2345,-27.2345]], [27.2345,-27.2345]
 // Needed: lng,lat;lng,lat
 export function fetchOptimizedRouteLeg1(start, middle, end) {
-  console.log("In actions to fetch route1");
   const inputCoordSequence = [start];
   inputCoordSequence.push(...middle);
   inputCoordSequence.push(end);
@@ -67,7 +63,6 @@ export function fetchOptimizedRouteLeg1(start, middle, end) {
 }
 
 export function fetchOptimizedRouteLeg2(start, middle, end) {
-  console.log("In actions to fetch route2");
   const inputCoordSequence = [start];
   inputCoordSequence.push(...middle);
   inputCoordSequence.push(end);
