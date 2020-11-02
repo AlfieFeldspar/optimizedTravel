@@ -1,4 +1,8 @@
 # optimizedTravel
+<<<<<<< HEAD
+=======
+
+>>>>>>> 7f2391ec35ce08db896ee0b6e24a6019c91aae72
 A full stack app to build optimized driving routes for traveling nurses.
 
 TODO
