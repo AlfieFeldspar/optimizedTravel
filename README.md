@@ -3,6 +3,7 @@
 CURRENT/ACTIVE BRANCH: simpleMapboxTry. NOT up to date with Main
 
 A full stack app to build optimized driving routes for traveling nurses.
+Uses: React/redux, Nodejs/Express, mySQL, react-map-gl, (trying deck.gl)
 
 TODO
 * [x] Develop user stories
