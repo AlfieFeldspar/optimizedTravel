@@ -1,18 +1,14 @@
 # optimizedTravel
-
-CURRENT/ACTIVE BRANCH: simpleMapboxTry. NOT up to date with Main
-
 A full stack app to build optimized driving routes for traveling nurses.
-Uses: React/redux, Nodejs/Express, mySQL, react-map-gl, (trying deck.gl)
 
 TODO
-* [] somehow EXPORT the array of coordinates that form the trip
+* [] grab new SVGs
 
 * [x] Develop user stories
     * [x] RN: traveling around town on home health visits
     * [x] Nurse manager in the office watching the numbers
 
-* [] Wireframes
+* [x] Wireframes
     * [x] Landing page for RN on mobile
     * [x] Map page for RN on mobile
 
