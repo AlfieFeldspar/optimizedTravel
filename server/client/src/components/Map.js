@@ -1,7 +1,7 @@
-import React, { PureComponent } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import ReactMapGL, { Source, Layer, Marker } from "react-map-gl";
+import { StaticMap, Marker } from "react-map-gl";
 import DeckGL from "@deck.gl/react";
 import { PathLayer } from "@deck.gl/layers";
 // import {GeoJsonLayer} from '@deck.gl/layers';
@@ -21,7 +21,7 @@ const lineFeature = {
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 
-class Map extends PureComponent {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -83,9 +83,9 @@ class Map extends PureComponent {
     setTimeout(() => {
       // Merge all coords into one trip
       // Format as nested array [[lng,lat],[lng,lat]]
-      
-      console.log("let1coords" ,this.props.routeLeg1.coordinates)
-      console.log("let2coords" ,this.props.routeLeg2.coordinates)
+
+      console.log("let1coords", this.props.routeLeg1.coordinates);
+      console.log("let2coords", this.props.routeLeg2.coordinates);
 
       let fullTrip = [...this.props.routeLeg1.coordinates];
       let leg2 = [...this.props.routeLeg2.coordinates];
@@ -94,8 +94,8 @@ class Map extends PureComponent {
       });
       lineFeature.path.push(fullTrip);
     }, 3000);
-    console.log('linefeature', lineFeature)
-    this.setState({lineFeature: lineFeature})
+    console.log("linefeature", lineFeature);
+    this.setState({ lineFeature: lineFeature });
     return lineFeature;
   };
 
@@ -109,79 +109,84 @@ class Map extends PureComponent {
             className="btn btn-primary btn-sm map-button"
             type="button"
             onClick={this.btnClickHandler}
-          >Route</button>
+          >
+            Route
+          </button>
         </div>
-        <ReactMapGL
+        <StaticMap
           {...this.state.viewport}
           onViewportChange={(viewport) => this.setState({ viewport })}
           id={"map"}
           ref={"map"}
           mapStyle="mapbox://styles/alfiefeldspar/ckgrbnv1m03yo19mae6w18rjn"
-          mapboxApiAccessToken={mapboxToken}
-        >
-          {this.props.patientData.map((patient) => (
+          mapboxApiAccessToken={mapboxToken}      
+          >
+            {this.props.patientData.map((patient) => (
+              <Marker
+                key={patient.pt_id}
+                latitude={patient.ptHomeLat}
+                longitude={patient.ptHomeLng}
+                offsetLeft={-12}
+                offsetTop={-24}
+              >
+                <svg
+                  className="marker"
+                  style={{
+                    width: "24px",
+                    height: "24px",
+                  }}
+                  viewBox="0 0 24 24"
+                  strokeWidth="3"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+              </Marker>
+            ))}
             <Marker
-              key={patient.pt_id}
-              latitude={patient.ptHomeLat}
-              longitude={patient.ptHomeLng}
+              latitude={this.state.startingRNCoords.lat}
+              longitude={this.state.startingRNCoords.lng}
               offsetLeft={-12}
               offsetTop={-24}
             >
               <svg
-                className="marker"
+                className="feather feather-truck"
                 style={{
-                  width: "24px",
-                  height: "24px",
+                  width: "24",
+                  height: "24",
                 }}
                 viewBox="0 0 24 24"
-                strokeWidth="3"
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                stroke="#ff6600"
+                strokeWidth="3"
               >
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
+                <rect x="1" y="3" width="15" height="13"></rect>
+                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
+                <circle cx="5.5" cy="18.5" r="2.5"></circle>
+                <circle cx="18.5" cy="18.5" r="2.5"></circle>
               </svg>
             </Marker>
-          ))}
-          <Marker
-            latitude={this.state.startingRNCoords.lat}
-            longitude={this.state.startingRNCoords.lng}
-            offsetLeft={-12}
-            offsetTop={-24}
-          >
-            <svg
-              className="feather feather-truck"
-              style={{
-                width: "24",
-                height: "24",
-              }}
-              viewBox="0 0 24 24"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              stroke="#ff6600"
-              strokeWidth="3"
-            >
-              <rect x="1" y="3" width="15" height="13"></rect>
-              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon>
-              <circle cx="5.5" cy="18.5" r="2.5"></circle>
-              <circle cx="18.5" cy="18.5" r="2.5"></circle>
-            </svg>
-          </Marker>
+          </StaticMap>
           <DeckGL
-            {...this.state.viewport}
-            layers={[
-              new PathLayer({
-                id: "path-layer",
-                data: this.state.lineFeature ? this.state.lineFeature : null,
-                strokeWidth: 3,
-                getPath: (d) => d.path,
-              }),
-            ]}
-          />
-          ;
-        </ReactMapGL>
+          {...this.state.viewport}
+          onViewportChange={(viewport) => this.setState({ viewport })}
+          layers={[
+            new PathLayer({
+              views: undefined,
+              controller: true,          
+              id: "path-layer",
+              data: this.state.lineFeature ? this.state.lineFeature : [],
+              strokeWidth: 3,
+              getPath: (d) => d.path,
+            }),
+          ]}
+        >
+        </DeckGL>
       </>
     );
   }

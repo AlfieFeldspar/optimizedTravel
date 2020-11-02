@@ -28,7 +28,7 @@ class PatientList extends Component {
             <th scope="col">Priority</th>
           </tr>
         </thead>
-        <tbody className="patient-table">
+        <tbody>
           {this.props.patientData.map((patient) => (
             <tr className="row-sm-3 patient-row" key={patient.pt_Id}>
               <th scope="col" className="patient-name">
