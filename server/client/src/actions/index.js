@@ -1,21 +1,19 @@
 import axios from "axios";
+import { request } from "express";
 
 export const FETCH_PATIENT_POINTS = "FETCH_PATIENT_POINTS ";
 export const FETCH_OPTIMIZED_ROUTE_LEG1 = "FETCH_OPTIMIZED_ROUTE_LEG1";
 export const FETCH_OPTIMIZED_ROUTE_LEG2 = "FETCH_OPTIMIZED_ROUTE_LEG2";
 export const CHANGE_PATIENT_PRIORITY = "CHANGE_PATIENT_PRIORITY";
-export const FETCH_ALL_NURSES = 
-"FETCH_ALL_NURSES";
-export const  FETCH_NURSE_BY_ID = "FETCH_NURSE_BY_ID";
+export const FETCH_ALL_NURSES = "FETCH_ALL_NURSES";
+export const FETCH_NURSE_BY_ID = "FETCH_NURSE_BY_ID";
 export const SEND_NURSE_COORDS = "SEND_NURSE_COORDS";
+export const CHANGE_VISIT_ORDER = "CHANGE_VISIT_ORDER";
+export const CLEAR_PATIENT_DATA = "CLEAR_PATIENT_DATA";
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 const ROOT_URL = "http://localhost:4000/api";
-
-// export function updatePatientVisitOrder() {
-//   const request = axios.post(`${ROOT_URL}/`)
-// }
 
 export function fetchPatientPoints(rn_Id) {
   const request = axios.get(`${ROOT_URL}/nursePatients/${rn_Id}`); //a promise
@@ -41,20 +39,42 @@ export function fetchNurseById(rnID) {
   };
 }
 
+export function changePatientVisitOrder(patientId, visitOrder) {
+  console.log("in action to change visit order");
+  const request = axios.post(
+    `${ROOT_URL}/patients/${patientId}/order/${visitOrder}`
+  );
+  return {
+    type: CHANGE_VISIT_ORDER,
+    payload: request,
+  };
+}
+
 export function changePatientPriority(patientId, priority) {
-  const request = axios.post(`${ROOT_URL}/patients/${patientId}/priority/${priority}`); //a promise
+  const request = axios.post(
+    `${ROOT_URL}/patients/${patientId}/priority/${priority}`
+  ); //a promise
   return {
     type: CHANGE_PATIENT_PRIORITY, //the action name"
     payload: request, //api call
   };
 }
 
-export function sendNurseStartingCoords(lng,lat,loc) {
-  return{
+export function sendNurseStartingCoords(lng, lat, loc) {
+  return {
     type: SEND_NURSE_COORDS,
-    payload: {lng: lng, lat: lat, loc:loc}
-  }
+    payload: { lng: lng, lat: lat, loc: loc },
+  };
 }
+
+export function clearPatientData() {
+  const request = axios.post(`${ROOT_URL}/clearData`);
+  return {
+    type: CLEAR_PATIENT_DATA,
+    payload: request,
+  };
+}
+
 // function inputs [-27.2345,-7.2345], [[27.2345,-27.2345],[27.2345,-27.2345]], [27.2345,-27.2345]
 // Needed: lng,lat;lng,lat
 export function fetchOptimizedRouteLeg1(start, middle, end) {
@@ -97,4 +117,4 @@ function stringifyCoordSequence(nestedArrayofCoordPairs) {
       return stringifyCoordPair(element);
     })
     .join(";");
-  }
+}

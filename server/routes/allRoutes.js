@@ -1,3 +1,4 @@
+const { request, response } = require("express");
 const express = require("express");
 // require('dotenv').config({path: '../server/.env'});
 
@@ -43,22 +44,26 @@ router.get("/nurses", (request, response, next) => {
   });
 });
 
-// endpoint for grabbing one nurse by rn_Id 
+// endpoint for grabbing one nurse by rn_Id
 router.get("/nurses/:rnId", (request, response, next) => {
   // Query the pool
-  pool.query("SELECT rn_Id, rnLastName, rnHomeLng, rnHomeLat, rnOfficeLng, rnOfficeLat FROM rnTable WHERE rn_Id = ?", [request.params.rnId], (error, results, fields) => {
-    // Handle error after the release.
-    if (error) throw error;
-    // send newUser to front end
-    response.send(results);
-  });
+  pool.query(
+    "SELECT rn_Id, rnLastName, rnHomeLng, rnHomeLat, rnOfficeLng, rnOfficeLat FROM rnTable WHERE rn_Id = ?",
+    [request.params.rnId],
+    (error, results, fields) => {
+      // Handle error after the release.
+      if (error) throw error;
+      // send newUser to front end
+      response.send(results);
+    }
+  );
 });
 
 // Grab all patients for one nurse
 router.get("/nursePatients/:rn_Id", (request, response, next) => {
   // Query the pool
   pool.query(
-    "SELECT ptTable.pt_Id, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority, ptTable.ptFirstName, ptTable.ptLastName, ptTable.visitOrder, ptTable.waypointName FROM ptTable  INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
+    "SELECT ptTable.pt_Id, ptTable.ptHomeLng, ptTable.ptHomeLat, ptTable.nursingNeed, ptTable.visitPriority, ptTable.ptFirstName, ptTable.ptLastName, ptTable.visitOrder, ptTable.waypointName FROM ptTable INNER JOIN rnTable ON ptTable.rn_Id=rnTable.rn_Id WHERE rnTable.rn_Id = ? ORDER BY ptTable.ptLastName ASC",
     request.params.rn_Id,
     (error, results, fields) => {
       // Handle error after the release.
@@ -76,6 +81,30 @@ router.post(
     pool.query(
       "UPDATE ptTable SET visitPriority = ? WHERE pt_Id = ?",
       [request.params.priority, request.params.patientId],
+      (error, results, fields) => {
+        if (error) throw error;
+        response.send(results);
+      }
+    );
+  }
+);
+
+router.post("/clearData", (request, response, next) => {
+  pool.query(
+    "DELETE FROM ptTable WHERE visitOrder IS NOT NULL",
+    (error, results, fields) => {
+      if (error) throw error;
+      response.send(results);
+    }
+  );
+});
+
+router.post(
+  "/patients/:patientId/order/:visitOrder",
+  (request, response, next) => {
+    pool.query(
+      "UPDATE ptTable SET visitOrder = ? WHERE pt_Id = ?",
+      [request.params.visitOrder, request.params.patientId],
       (error, results, fields) => {
         if (error) throw error;
         response.send(results);

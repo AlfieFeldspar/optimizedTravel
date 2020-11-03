@@ -6,6 +6,7 @@ import {
   fetchOptimizedRouteLeg1,
   fetchOptimizedRouteLeg2,
   fetchPatientPoints,
+  changePatientVisitOrder,
 } from "../actions";
 
 // const lineFeature = {
@@ -27,9 +28,9 @@ class Map extends Component {
       startingRNCoords_lng: -78.9371,
       lineFeature: {},
       viewport: {
-        latitude: 36.033376,
-        longitude: -78.928621,
-        zoom: 9,
+        latitude: 36.044478,
+        longitude: -78.886833,
+        zoom: 9.5,
         width: "100vw",
         height: "60vh",
         display: "block",
@@ -37,16 +38,9 @@ class Map extends Component {
     };
   }
 
-  // componentDidMount() {
-  //   setTimeout(() => {
-  //     this.setState({
-  //       startingRNCoords_lat: 35.9285,
-  //       startingRNCoords_lng: -78.9371,
-  //       startingLocation: "Home",
-  //     });
-  //     console.log(this.state.startingLocation);
-  //   }, 1000);
-  // }
+  componentDidUpdate() {
+    console.log("time to rerender!")
+  }
 
   // Handler for the routing button.
   // TODO: Make this a component?
@@ -94,8 +88,7 @@ class Map extends Component {
       // console.log('patientlocation', this.props.patientData);
       this.props.routeLeg2.forEach(waypoint => {
         if (waypoint.waypoint_index === 0) {
-          let tempArray = [waypoint.name];
-          trip.push(tempArray);
+          trip.push(waypoint.name);
         }
         return trip;
       })
@@ -134,8 +127,7 @@ class Map extends Component {
         }
         return trip;
       })
-      // console.log('finaltrip', trip)
-
+      console.log("trip of 6", trip)
 
       let patientVisitOrder = [];
       for (let i = 0; i < trip.length; i++) {
@@ -164,13 +156,20 @@ class Map extends Component {
       }
       console.log("nestafter loop", nestedObjects)
 
+      nestedObjects.forEach(obj => {
+        this.props.changePatientVisitOrder(obj.pt_Id, obj.visitOrder)
+      })
+      console.log("visit order changed!")
+
+      setTimeout(() => {
+       console.log("onenurse", this.props.oneNurseById)   
+        fetchPatientPoints(this.props.oneNurseById[0].rn_Id)
+        console.log("patientdata", this.props.patientData)
+      }, 200)
 
 
-    }, 200);
+    }, 2000);    
   }
-
-
-
 
   render() {
     return (
@@ -214,7 +213,7 @@ class Map extends Component {
 }
 
 function getMarkerForPatient(patient) {
-  if (patient.visitPriority === 1) {
+  if (patient.visitPriority == "High") {
     return (
       <Marker
         key={patient.pt_Id}
@@ -229,7 +228,7 @@ function getMarkerForPatient(patient) {
         />
       </Marker>
     );
-  } else if (patient.visitPriority === 2) {
+  } else if (patient.visitOrder === 2) {
     return (
       <Marker
         key={patient.pt_Id}
@@ -239,12 +238,12 @@ function getMarkerForPatient(patient) {
         offsetTop={-24}
       >
         <img
-          src="https://img.icons8.com/color/22/000000/2-circle-c--v1.png"
+          src="https://img.icons8.com/metro/26/000000/2-circle.png"
           alt="two"
         />
       </Marker>
     );
-  } else if (patient.visitPriority === 3) {
+  } else if (patient.visitOrder === 3) {
     return (
       <Marker
         key={patient.pt_Id}
@@ -253,11 +252,12 @@ function getMarkerForPatient(patient) {
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/color/22/000000/3-circle-c--v1.png"
+        <img
+          src="https://img.icons8.com/metro/26/000000/3-circle.png"
         alt="three"/>
       </Marker>
     );
-  } else if (patient.visitPriority === 4) {
+  } else if (patient.visitOrder === 4) {
     return (
       <Marker
         key={patient.pt_Id}
@@ -266,11 +266,12 @@ function getMarkerForPatient(patient) {
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/color/22/000000/4-circle-c--v1.png"
+        <img
+          src="https://img.icons8.com/metro/26/000000/4-circle.png"
         alt="four"/>
       </Marker>
     );
-  } else if (patient.visitPriority === 5) {
+  } else if (patient.visitOrder === 5) {
     return (
       <Marker
         key={patient.pt_Id}
@@ -279,11 +280,12 @@ function getMarkerForPatient(patient) {
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/color/22/000000/5-circle-c--v2.png"
+        <img src="https://img.icons8.com/metro/26/000000/5-circle.png"
+
         alt="five"/>
       </Marker>
     );
-  } else if (patient.visitPriority === 6) {
+  } else if (patient.visitOrder === 6) {
     return (
       <Marker
         key={patient.pt_Id}
@@ -292,7 +294,8 @@ function getMarkerForPatient(patient) {
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/color/22/000000/6-circle-c--v1.png"
+        <img
+          src="https://img.icons8.com/metro/26/000000/6-circle.png"
         alt="six"/>
       </Marker>
     );
@@ -306,12 +309,13 @@ function mapStateToProps(state) {
     routeLeg2: state.routeLeg2,
     oneNurseById: state.oneNurseById,
     nurseCoords: state.nurseCoords,
+    clearedPatientData: state.clearedPatientData,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchPatientPoints, fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2 },
+    { fetchPatientPoints, fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2, changePatientVisitOrder },
     dispatch
   );
 }

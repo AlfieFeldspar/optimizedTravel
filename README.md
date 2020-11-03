@@ -94,5 +94,6 @@ TODO
     * [x] Generate remaining fake patients
     * [] Change color of icon if high priority
     * [] TOOL TIPS: Click on name in list and marker flashes or changes color 
-    * [] Landing page for RN manager   
+    * [] Landing page for RN manager  
+    * [] Logging out clears the visit order in backend 
 

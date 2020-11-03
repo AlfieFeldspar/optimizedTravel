@@ -6,6 +6,8 @@ import ChangePatientPriorityReducer from "./reducer_change_pt_priority";
 import FetchAllNursesReducer from "./reducer_fetch_nurses";
 import FetchNurseById from "./reducer_fetch_nurse_by_id";
 import SendNurseCoords from "./reducer_nurse_coords";
+import ChangeVisitOrder from "./reducer_visit_order";
+import ClearedPatientData from "./reducer_clear_patient_data"
 
 const rootReducer = combineReducers({
   patientData: PatientPointsReducer,
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   allNurses: FetchAllNursesReducer,
   oneNurseById: FetchNurseById,
   nurseCoords: SendNurseCoords,
+  changedVisitOrder: ChangeVisitOrder,
+  clearedPatientData: ClearedPatientData,
 });
 
 export default rootReducer;
