@@ -1,5 +1,4 @@
 import axios from "axios";
-import { request } from "express";
 
 export const FETCH_PATIENT_POINTS = "FETCH_PATIENT_POINTS ";
 export const FETCH_OPTIMIZED_ROUTE_LEG1 = "FETCH_OPTIMIZED_ROUTE_LEG1";

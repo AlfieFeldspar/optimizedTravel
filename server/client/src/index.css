@@ -125,14 +125,13 @@ body {
 }
 
 .table-headers {
-  font-size: 12pt;
+  font-size: 11pt;
   text-decoration: underline;
 }
 
 .table-body {
   margin-top: 10px;
   width: 100%;
-  
 }
 
 

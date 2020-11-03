@@ -21,12 +21,6 @@ class PatientList extends Component {
     }, 100);
   };
 
-  onclickLogout = () => {
-    setTimeout(() => {
-      this.props.clearPatientData();
-    }, 2000);
-  };
-
   render() {
     return (
       <>
@@ -36,6 +30,8 @@ class PatientList extends Component {
               <tr className="table-headers">
                 <th scope="col">Patient</th>
                 <th scope="col">Nursing Need</th>
+                <th scope="col">Location</th>
+                <th scope="col">Order</th>
                 <th scope="col">Priority</th>
               </tr>
             </thead>
@@ -48,6 +44,12 @@ class PatientList extends Component {
                   </th>
                   <th scope="col" className="visit-reason">
                     {patient.nursingNeed}
+                  </th>
+                  <th scope="col" className="visit-reason">
+                    {patient.waypointName}
+                  </th>
+                  <th scope="col" className="visit-reason">
+                    {patient.visitOrder}
                   </th>
                   <th scope="col" className="visit-priority">
                     <button
@@ -72,7 +74,7 @@ class PatientList extends Component {
             </tbody>
           </table>
         </div>
-        <Link to="/" onClick="this.onclickLogout" className="link-logout">
+        <Link to="/" className="link-logout">
           Logout
         </Link>
       </>

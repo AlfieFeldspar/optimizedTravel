@@ -39,7 +39,7 @@ class Map extends Component {
   }
 
   componentDidUpdate() {
-    console.log("time to rerender!")
+    console.log("time to rerender!");
   }
 
   // Handler for the routing button.
@@ -86,90 +86,94 @@ class Map extends Component {
     setTimeout(() => {
       console.log("leg2", this.props.routeLeg2);
       // console.log('patientlocation', this.props.patientData);
-      this.props.routeLeg2.forEach(waypoint => {
+      this.props.routeLeg2.forEach((waypoint) => {
         if (waypoint.waypoint_index === 0) {
           trip.push(waypoint.name);
         }
         return trip;
-      })
+      });
       // console.log("trip", trip)
-      this.props.routeLeg2.forEach(waypoint => {
+      this.props.routeLeg2.forEach((waypoint) => {
         if (waypoint.waypoint_index === 1) {
           trip.push(waypoint.name);
         }
         return trip;
-      })
+      });
       // console.log("trip", trip)
-      this.props.routeLeg2.forEach(waypoint => {
+      this.props.routeLeg2.forEach((waypoint) => {
         if (waypoint.waypoint_index === 2) {
           trip.push(waypoint.name);
         }
         return trip;
-      })
+      });
       // console.log("trip", trip)
-      this.props.routeLeg2.forEach(waypoint => {
+      this.props.routeLeg2.forEach((waypoint) => {
         if (waypoint.waypoint_index === 3) {
           trip.push(waypoint.name);
         }
         return trip;
-      })
+      });
       // console.log("trip", trip)
-      this.props.routeLeg2.forEach(waypoint => {
+      this.props.routeLeg2.forEach((waypoint) => {
         if (waypoint.waypoint_index === 4) {
           trip.push(waypoint.name);
         }
         return trip;
-      })
+      });
       // console.log("trip", trip)
-      this.props.routeLeg2.forEach(waypoint => {
+      this.props.routeLeg2.forEach((waypoint) => {
         if (waypoint.waypoint_index === 5) {
           trip.push(waypoint.name);
         }
         return trip;
-      })
-      console.log("trip of 6", trip)
+      });
+      console.log("trip of 6", trip);
 
       let patientVisitOrder = [];
       for (let i = 0; i < trip.length; i++) {
-        this.props.patientData.forEach(patient => {
-          if(patient.waypointName === trip[i]) {
-            let tempArray = [patient.pt_Id, patient.waypointName]
-            patientVisitOrder.push(tempArray)
+        this.props.patientData.forEach((patient) => {
+          if (patient.waypointName === trip[i]) {
+            let tempArray = [patient.pt_Id, patient.waypointName];
+            patientVisitOrder.push(tempArray);
           }
           return patientVisitOrder;
-        })
+        });
       }
-      console.log("trip", trip)
-      console.log("patientVisitOrderlength", patientVisitOrder.length)
-
+      console.log("trip", trip);
+      console.log("patientVisitOrderlength", patientVisitOrder.length);
 
       for (let i = 0; i < patientVisitOrder.length; i++) {
         console.log("inloop", patientVisitOrder[i]);
-        patientVisitOrder[i].push(i+1);
-      };
-      console.log("patientVisitOrderafterloop", patientVisitOrder)
+        patientVisitOrder[i].push(i + 1);
+      }
+      console.log("patientVisitOrderafterloop", patientVisitOrder);
 
-      let nestedObjects=[];
-      for (let i = 0; i< patientVisitOrder.length; i++) {
-        let obj = {pt_Id: patientVisitOrder[i][0], waypointName: patientVisitOrder[i][1], visitOrder: patientVisitOrder[i][2]}
+      let nestedObjects = [];
+      for (let i = 0; i < patientVisitOrder.length; i++) {
+        let obj = {
+          pt_Id: patientVisitOrder[i][0],
+          waypointName: patientVisitOrder[i][1],
+          visitOrder: patientVisitOrder[i][2],
+        };
         nestedObjects.push(obj);
       }
-      console.log("nestafter loop", nestedObjects)
-
-      nestedObjects.forEach(obj => {
-        this.props.changePatientVisitOrder(obj.pt_Id, obj.visitOrder)
-      })
-      console.log("visit order changed!")
+      console.log("nestafter loop", nestedObjects);
 
       setTimeout(() => {
-       console.log("onenurse", this.props.oneNurseById)   
-        fetchPatientPoints(this.props.oneNurseById[0].rn_Id)
-        console.log("patientdata", this.props.patientData)
-      }, 200)
+        nestedObjects.forEach((patient) => {
+          this.props.changePatientVisitOrder(patient.pt_Id, patient.visitOrder);
+          console.log(patient.visitOrder);
+        });
+        this.props.fetchPatientPoints(this.props.oneNurseById[0].rn_Id);
+      }, 600);
 
+      console.log("visit order changed!");
 
-    }, 2000);    
-  }
+      setTimeout(() => {
+        console.log("patientdata", this.props.patientData);
+      }, 200);
+    }, 2000);
+  };
 
   render() {
     return (
@@ -196,24 +200,27 @@ class Map extends Component {
             getMarkerForPatient(patient)
           )}
 
-      {/* Hardcoded home icon and lng/lat for RN */}
-      <Marker
-        latitude={this.state.startingRNCoords_lat}
-        longitude={this.state.startingRNCoords_lng}
-        offsetLeft={-12}
-        offsetTop={-24}
-      >
-        <img src="https://img.icons8.com/material/24/000000/cottage--v1.png" alt="house" />
-       </Marker>
+          {/* Hardcoded home icon and lng/lat for RN */}
+          <Marker
+            latitude={this.state.startingRNCoords_lat}
+            longitude={this.state.startingRNCoords_lng}
+            offsetLeft={-12}
+            offsetTop={-24}
+          >
+            <img
+              src="https://img.icons8.com/material/24/000000/cottage--v1.png"
+              alt="house"
+            />
+          </Marker>
         </ReactMapGL>
       </>
     );
   }
-
 }
 
 function getMarkerForPatient(patient) {
-  if (patient.visitPriority == "High") {
+
+  if (patient.visitPriority === "High"){
     return (
       <Marker
         key={patient.pt_Id}
@@ -227,8 +234,25 @@ function getMarkerForPatient(patient) {
           alt="red"
         />
       </Marker>
-    );
-  } else if (patient.visitOrder === 2) {
+    )} else if (patient.visitOrder === 1){
+    return (
+      <Marker
+        key={patient.pt_Id}
+        latitude={patient.ptHomeLat}
+        longitude={patient.ptHomeLng}
+        offsetLeft={-12}
+        offsetTop={-24}
+      >
+        <img
+          src="https://img.icons8.com/metro/26/000000/1-circle.png"
+          alt="two"
+        />
+      </Marker>
+      )}
+
+
+
+  if (patient.visitOrder === 2) {
     return (
       <Marker
         key={patient.pt_Id}
@@ -254,7 +278,8 @@ function getMarkerForPatient(patient) {
       >
         <img
           src="https://img.icons8.com/metro/26/000000/3-circle.png"
-        alt="three"/>
+          alt="three"
+        />
       </Marker>
     );
   } else if (patient.visitOrder === 4) {
@@ -268,7 +293,8 @@ function getMarkerForPatient(patient) {
       >
         <img
           src="https://img.icons8.com/metro/26/000000/4-circle.png"
-        alt="four"/>
+          alt="four"
+        />
       </Marker>
     );
   } else if (patient.visitOrder === 5) {
@@ -280,9 +306,10 @@ function getMarkerForPatient(patient) {
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/metro/26/000000/5-circle.png"
-
-        alt="five"/>
+        <img
+          src="https://img.icons8.com/metro/26/000000/5-circle.png"
+          alt="five"
+        />
       </Marker>
     );
   } else if (patient.visitOrder === 6) {
@@ -296,9 +323,12 @@ function getMarkerForPatient(patient) {
       >
         <img
           src="https://img.icons8.com/metro/26/000000/6-circle.png"
-        alt="six"/>
+          alt="six"
+        />
       </Marker>
     );
+    // } else if (patient.visitOrder ===1) {
+     
   }
 }
 
@@ -315,14 +345,17 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchPatientPoints, fetchOptimizedRouteLeg1, fetchOptimizedRouteLeg2, changePatientVisitOrder },
+    {
+      fetchPatientPoints,
+      fetchOptimizedRouteLeg1,
+      fetchOptimizedRouteLeg2,
+      changePatientVisitOrder,
+    },
     dispatch
   );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
-
-
 
 // function getMarkerForNurse() {
 //   if (this.state.startingLocation === "Home") {
