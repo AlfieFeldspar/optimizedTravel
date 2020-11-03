@@ -179,7 +179,7 @@ class Map extends Component {
     return (
       <>
         <div>
-          <div className="map-title">Traveling Nurse Route Planner</div>
+          <div className="map-title">Time Optimized Route Planner</div>
           <button
             className="btn btn-primary btn-sm map-button"
             type="button"

@@ -1,12 +1,5 @@
 # optimizedTravel
-<<<<<<< HEAD
-=======
-
->>>>>>> 7f2391ec35ce08db896ee0b6e24a6019c91aae72
-A full stack app to build optimized driving routes for traveling nurses.
-
-TODO
-* [] grab new SVGs
+A full stack app to build time-optimized driving routes for traveling nurses.
 
 * [x] Develop user stories
     * [x] RN: traveling around town on home health visits
@@ -33,6 +26,7 @@ TODO
     * [x] GET pts by RN_ID
     * [x] POST to pts to change visitPriority
     * [x] GET one nurse with name/location from selection on Launch
+    * [x] POST to db to update visit order
 
 * [x] Front end React/Redux, general 
     * [x] started & running
@@ -65,14 +59,16 @@ TODO
             (no lines visible)
 
 * [] NEW PLAN: Display waypoints with icons to represent their order
-    * [x] Assemble icons
-    * [x] Add 'visit order' field to backend
-    * 
+    * [x] Assemble icons (1-6 + high priority)
+    * [x] Add 'visit order' and 'waypoingName' fields to backend
+    * [x] IS DYNAMIC: when new High priority is selected, icons/order display the change
+    * [] Only truly functional for one test patient: FIX FOR ALL
 
 * [x] Front end TABLE OF PATIENTS component
     * [x] Skeletonize component
     * [x] Display list of patients
     * [x] Sort by patient last name
+    * [x] Add columns for waypoint name & visit order
     * [x] Logout
     * [x] In-table button to change visit priority
         * [x] Add button
@@ -89,10 +85,11 @@ TODO
     * [x] FETCH optimized route from Mapbox API
     * [x] POST to change visitPriority
     * [x] FETCH nurse id & coords from name on startup.  
+    * [x] POST to change visit order
 
 * [] STRETCH GOALS
     * [x] Generate remaining fake patients
-    * [] Change color of icon if high priority
+    * [x] Change color of icon if high priority
     * [] TOOL TIPS: Click on name in list and marker flashes or changes color 
     * [] Landing page for RN manager  
     * [] Logging out clears the visit order in backend 
