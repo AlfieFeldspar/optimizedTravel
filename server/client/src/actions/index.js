@@ -13,6 +13,10 @@ const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
 const ROOT_URL = "http://localhost:4000/api";
 
+// export function updatePatientVisitOrder() {
+//   const request = axios.post(`${ROOT_URL}/`)
+// }
+
 export function fetchPatientPoints(rn_Id) {
   const request = axios.get(`${ROOT_URL}/nursePatients/${rn_Id}`); //a promise
   return {
@@ -60,7 +64,7 @@ export function fetchOptimizedRouteLeg1(start, middle, end) {
   // current condition [[-27.2345,7.2345], [-27.2345,27.2345],[-27.2345,7.2345], [-27.2345,27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
   const request = axios.get(
-    `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`
+    `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&steps=true&access_token=${mapboxToken}`
   );
   return {
     type: FETCH_OPTIMIZED_ROUTE_LEG1,
@@ -75,7 +79,7 @@ export function fetchOptimizedRouteLeg2(start, middle, end) {
   // current condition [[-27.2345,-7.2345], [27.2345,-27.2345],[27.2345,-27.2345], [27.2345,-27.2345]]
   const coords = stringifyCoordSequence(inputCoordSequence);
   const request = axios.get(
-    `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&access_token=${mapboxToken}`
+    `https://api.mapbox.com/optimized-trips/v1/mapbox/driving/${coords}?source=first&destination=last&roundtrip=false&geometries=geojson&steps=true&access_token=${mapboxToken}`
   );
   return {
     type: FETCH_OPTIMIZED_ROUTE_LEG2,

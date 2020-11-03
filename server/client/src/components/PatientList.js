@@ -21,7 +21,8 @@ class PatientList extends Component {
    render() {
     return (
       <>
-      <table className="patient-table table-striped">
+      <div className="patient-table">
+      <table className=" table-striped table-body">
         <thead>
           <tr className="table-headers">
             <th scope="col">Patient</th>
@@ -61,7 +62,8 @@ class PatientList extends Component {
           ))}
         </tbody>
       </table>
-      <Link to="/" className="link-go-home">
+      </div>
+      <Link to="/" className="link-logout">
             Logout
           </Link>
       </>

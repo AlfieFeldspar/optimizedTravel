@@ -59,7 +59,7 @@ body {
 
 .name-textbox {
   text-align: center;
-  margin-left: 115px;
+  margin-left: 127px;
   border-radius: 4px;
   font-size: 13px;
   padding: 15px;
@@ -81,7 +81,7 @@ body {
 
 .location-textbox {
   text-align: center;
-  margin-left: 150px;
+  margin-left: 140px;
   border-radius: 4px;
   font-size: 13px;
   padding: 15px;
@@ -98,9 +98,10 @@ body {
   cursor: pointer;
 }
 
-.link-go-home {
+.link-logout {
   margin-left: 310px;
   font-size: 12px;
+  font-weight: bold;
   color: red;
   z-index: 1 !important;
 }
@@ -128,8 +129,10 @@ body {
   text-decoration: underline;
 }
 
-.patient-table {
-  margin-left: auto;
-  margin-right: auto;
+.table-body {
   margin-top: 10px;
+  width: 100%;
+  
 }
+
+

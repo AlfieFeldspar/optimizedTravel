@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import { StaticMap, Marker } from "react-map-gl";
+import ReactMapGL, { Marker } from "react-map-gl";
 import {
   fetchOptimizedRouteLeg1,
   fetchOptimizedRouteLeg2,
   fetchPatientPoints,
 } from "../actions";
 
-const lineFeature = {
-  type: "LineString",
-  path: [],
-  color: [255, 0, 0],
-};
+// const lineFeature = {
+//   type: "LineString",
+//   path: [],
+//   color: [255, 0, 0],
+// };
 
 const mapboxToken =
   "pk.eyJ1IjoiYWxmaWVmZWxkc3BhciIsImEiOiJja2dyOHBteHIwOHdoMnFzMGZ0dzhrdWx0In0.seq5jj6Q5Hhw2Fb-ecBskg";
@@ -21,10 +21,10 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      startingRNCoords: {
-        lat: 35.9285,
-        lng: -78.9371,
-      },
+      visitOrder: [],
+      startingLocation: "",
+      startingRNCoords_lat: 35.9285,
+      startingRNCoords_lng: -78.9371,
       lineFeature: {},
       viewport: {
         latitude: 36.033376,
@@ -37,7 +37,18 @@ class Map extends Component {
     };
   }
 
-  // Handler for the routing button. It does too much!
+  // componentDidMount() {
+  //   setTimeout(() => {
+  //     this.setState({
+  //       startingRNCoords_lat: 35.9285,
+  //       startingRNCoords_lng: -78.9371,
+  //       startingLocation: "Home",
+  //     });
+  //     console.log(this.state.startingLocation);
+  //   }, 1000);
+  // }
+
+  // Handler for the routing button.
   // TODO: Make this a component?
   btnClickHandler = () => {
     // ALL STEPS BELOW are to process coordinate pairs into a nested array
@@ -45,8 +56,8 @@ class Map extends Component {
     // FOR LEG1: From RN to priority patient
     // Compile the RN starting coordinates into an array
     const startCoordsLeg1 = [
-      this.state.startingRNCoords.lng,
-      this.state.startingRNCoords.lat,
+      this.state.startingRNCoords_lng,
+      this.state.startingRNCoords_lat,
     ];
     const middleCoords = [];
     const endPatientLeg1 = this.props.patientData.find((patient) => {
@@ -75,20 +86,91 @@ class Map extends Component {
       middlePatients,
       endCoordsLeg2
     );
+
+    let trip = [];
     // Ensure all props are back
     setTimeout(() => {
-      // Merge all coords into one trip
-      // Format as nested array [[lng,lat],[lng,lat]
-      let fullTrip = [...this.props.routeLeg1.coordinates];
-      let leg2 = [...this.props.routeLeg2.coordinates];
-      leg2.forEach((pair) => {
-        return fullTrip.push(pair);
-      });
-      lineFeature.path.push(fullTrip);
-      console.log("fulltrip=PATH in lineFeature", fullTrip);
-    }, 3000);
-    this.setState({ lineFeature: lineFeature });
-  };
+      console.log("leg2", this.props.routeLeg2);
+      // console.log('patientlocation', this.props.patientData);
+      this.props.routeLeg2.forEach(waypoint => {
+        if (waypoint.waypoint_index === 0) {
+          let tempArray = [waypoint.name];
+          trip.push(tempArray);
+        }
+        return trip;
+      })
+      // console.log("trip", trip)
+      this.props.routeLeg2.forEach(waypoint => {
+        if (waypoint.waypoint_index === 1) {
+          trip.push(waypoint.name);
+        }
+        return trip;
+      })
+      // console.log("trip", trip)
+      this.props.routeLeg2.forEach(waypoint => {
+        if (waypoint.waypoint_index === 2) {
+          trip.push(waypoint.name);
+        }
+        return trip;
+      })
+      // console.log("trip", trip)
+      this.props.routeLeg2.forEach(waypoint => {
+        if (waypoint.waypoint_index === 3) {
+          trip.push(waypoint.name);
+        }
+        return trip;
+      })
+      // console.log("trip", trip)
+      this.props.routeLeg2.forEach(waypoint => {
+        if (waypoint.waypoint_index === 4) {
+          trip.push(waypoint.name);
+        }
+        return trip;
+      })
+      // console.log("trip", trip)
+      this.props.routeLeg2.forEach(waypoint => {
+        if (waypoint.waypoint_index === 5) {
+          trip.push(waypoint.name);
+        }
+        return trip;
+      })
+      // console.log('finaltrip', trip)
+
+
+      let patientVisitOrder = [];
+      for (let i = 0; i < trip.length; i++) {
+        this.props.patientData.forEach(patient => {
+          if(patient.waypointName === trip[i]) {
+            let tempArray = [patient.pt_Id, patient.waypointName]
+            patientVisitOrder.push(tempArray)
+          }
+          return patientVisitOrder;
+        })
+      }
+      console.log("trip", trip)
+      console.log("patientVisitOrderlength", patientVisitOrder.length)
+
+
+      for (let i = 0; i < patientVisitOrder.length; i++) {
+        console.log("inloop", patientVisitOrder[i]);
+        patientVisitOrder[i].push(i+1);
+      };
+      console.log("patientVisitOrderafterloop", patientVisitOrder)
+
+      let nestedObjects=[];
+      for (let i = 0; i< patientVisitOrder.length; i++) {
+        let obj = {pt_Id: patientVisitOrder[i][0], waypointName: patientVisitOrder[i][1], visitOrder: patientVisitOrder[i][2]}
+        nestedObjects.push(obj);
+      }
+      console.log("nestafter loop", nestedObjects)
+
+
+
+    }, 200);
+  }
+
+
+
 
   render() {
     return (
@@ -103,7 +185,7 @@ class Map extends Component {
             Route
           </button>
         </div>
-        <StaticMap
+        <ReactMapGL
           {...this.state.viewport}
           onViewportChange={(viewport) => this.setState({ viewport })}
           id={"map"}
@@ -115,104 +197,106 @@ class Map extends Component {
             getMarkerForPatient(patient)
           )}
 
-          {getMarkerForNurse()}
-
-        </StaticMap>
+      {/* Hardcoded home icon and lng/lat for RN */}
+      <Marker
+        latitude={this.state.startingRNCoords_lat}
+        longitude={this.state.startingRNCoords_lng}
+        offsetLeft={-12}
+        offsetTop={-24}
+      >
+        <img src="https://img.icons8.com/material/24/000000/cottage--v1.png" alt="house" />
+       </Marker>
+        </ReactMapGL>
       </>
     );
   }
+
 }
 
 function getMarkerForPatient(patient) {
-  if (patient.visitPriority === "High") {
+  if (patient.visitPriority === 1) {
     return (
       <Marker
-        key={patient.pt_id}
+        key={patient.pt_Id}
         latitude={patient.ptHomeLat}
         longitude={patient.ptHomeLng}
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/color/18/000000/high-priority.png" />
+        <img
+          src="https://img.icons8.com/color/18/000000/high-priority.png"
+          alt="red"
+        />
       </Marker>
     );
-  } else {
+  } else if (patient.visitPriority === 2) {
     return (
       <Marker
-        key={patient.pt_id}
+        key={patient.pt_Id}
         latitude={patient.ptHomeLat}
         longitude={patient.ptHomeLng}
         offsetLeft={-12}
         offsetTop={-24}
       >
-        <img src="https://img.icons8.com/color/22/000000/2-circle-c--v1.png" />
+        <img
+          src="https://img.icons8.com/color/22/000000/2-circle-c--v1.png"
+          alt="two"
+        />
       </Marker>
     );
-  }
-
-  // {
-  //   /* // )
-  //             // {/* <img src="https://img.icons8.com/color/22/000000/3-circle-c--v1.png"/> */
-  // }
-  // {
-  //   /* <img src="https://img.icons8.com/color/22/000000/4-circle-c--v1.png"/> */
-  // }
-  // {
-  //   /* <img src="https://img.icons8.com/color/22/000000/5-circle-c--v2.png"/> */
-  // }
-  // {
-  //   /*<img src="https://img.icons8.com/color/22/000000/6-circle-c--v1.png"/> */
-  // }
-
-  //   switch(index) {
-  //     case 2: return (<Marker>2</Marker>)
-  //   }
-  // }
-}
-
-function getMarkerForNurse() {
-  if (this.props.nurseCoords.loc === "Home") {
+  } else if (patient.visitPriority === 3) {
     return (
       <Marker
-            latitude={this.props.nurseCoords.lat}
-            longitude={this.props.nurseCoords.lng}
-            offsetLeft={-12}
-            offsetTop={-24}
-          >
-      <img src="https://img.icons8.com/ios-glyphs/30/000000/city-buildings.png"/>
+        key={patient.pt_Id}
+        latitude={patient.ptHomeLat}
+        longitude={patient.ptHomeLng}
+        offsetLeft={-12}
+        offsetTop={-24}
+      >
+        <img src="https://img.icons8.com/color/22/000000/3-circle-c--v1.png"
+        alt="three"/>
       </Marker>
     );
-  } else {
+  } else if (patient.visitPriority === 4) {
     return (
       <Marker
-            latitude={this.props.nurseCoords.lat}
-            longitude={this.props.nurseCoords.lng}
-            offsetLeft={-12}
-            offsetTop={-24}
-          >
-        <img src="https://img.icons8.com/material/24/000000/cottage--v1.png"/>
+        key={patient.pt_Id}
+        latitude={patient.ptHomeLat}
+        longitude={patient.ptHomeLng}
+        offsetLeft={-12}
+        offsetTop={-24}
+      >
+        <img src="https://img.icons8.com/color/22/000000/4-circle-c--v1.png"
+        alt="four"/>
+      </Marker>
+    );
+  } else if (patient.visitPriority === 5) {
+    return (
+      <Marker
+        key={patient.pt_Id}
+        latitude={patient.ptHomeLat}
+        longitude={patient.ptHomeLng}
+        offsetLeft={-12}
+        offsetTop={-24}
+      >
+        <img src="https://img.icons8.com/color/22/000000/5-circle-c--v2.png"
+        alt="five"/>
+      </Marker>
+    );
+  } else if (patient.visitPriority === 6) {
+    return (
+      <Marker
+        key={patient.pt_Id}
+        latitude={patient.ptHomeLat}
+        longitude={patient.ptHomeLng}
+        offsetLeft={-12}
+        offsetTop={-24}
+      >
+        <img src="https://img.icons8.com/color/22/000000/6-circle-c--v1.png"
+        alt="six"/>
       </Marker>
     );
   }
-
-  {
-    /* // )
-              // {/* <img src="https://img.icons8.com/color/22/000000/3-circle-c--v1.png"/> */
-  }
-  {
-    /* <img src="https://img.icons8.com/color/22/000000/4-circle-c--v1.png"/> */
-  }
-  {
-    /* <img src="https://img.icons8.com/color/22/000000/5-circle-c--v2.png"/> */
-  }
-  {
-    /*<img src="https://img.icons8.com/color/22/000000/6-circle-c--v1.png"/> */
-  }
-
-  //   switch(index) {
-  //     case 2: return (<Marker>2</Marker>)
-  //   }
-  // }
 }
 
 function mapStateToProps(state) {
@@ -233,3 +317,30 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Map);
+
+
+
+// function getMarkerForNurse() {
+//   if (this.state.startingLocation === "Home") {
+//     return (
+//       <Marker
+//         latitude={this.state.startingRNCoords_lat}
+//         longitude={this.state.startingRNCoords_lng}
+//         offsetLeft={-12}
+//         offsetTop={-24}
+//       >
+//         <img src="https://img.icons8.com/ios-glyphs/30/000000/city-buildings.png" />
+//       </Marker>
+//     );
+//   } else {
+//     return (
+//       <Marker
+//         latitude={this.state.startingRNCoords_lat}
+//         longitude={this.state.startingRNCoords_lng}
+//         offsetLeft={-12}
+//         offsetTop={-24}
+//       >
+//{/* <img src="https://img.icons8.com/ios-glyphs/30/000000/city-buildings.png" alt="office"/> */}
+
+//       </Marker>
+//     );

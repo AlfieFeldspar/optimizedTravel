@@ -59,15 +59,21 @@ TODO
     * [x] Connect the routes into one Trip
     * [x] Format into geoJson object
 
-* [] DISPLAY THE TRIP ROUTES!
+* [] Display trip route lines
     * [x] DATA BEING PASSED TO DECK CANVAS!
     * [x] CANVAS DISPLAYING WITH DEV TOOLS!
             (no lines visible)
+
+* [] NEW PLAN: Display waypoints with icons to represent their order
+    * [x] Assemble icons
+    * [x] Add 'visit order' field to backend
+    * 
 
 * [x] Front end TABLE OF PATIENTS component
     * [x] Skeletonize component
     * [x] Display list of patients
     * [x] Sort by patient last name
+    * [x] Logout
     * [x] In-table button to change visit priority
         * [x] Add button
         * [x] POST endpt backend build, 

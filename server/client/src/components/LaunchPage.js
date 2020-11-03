@@ -4,7 +4,8 @@ import { bindActionCreators } from "redux";
 import {
   fetchAllNurses,
   fetchPatientPoints,
-  fetchNurseById, sendNurseStartingCoords,
+  fetchNurseById,
+  sendNurseStartingCoords,
 } from "../actions/index";
 import "bootstrap/dist/css/bootstrap.min.css";
 import DropdownButton from "react-bootstrap/DropdownButton";
@@ -46,7 +47,7 @@ class LaunchPage extends Component {
 
   // Handler for the starting location dropdown
   departureSelectHandler = (e) => {
-    // find nurse data again 
+    // find nurse data again
     let selectedNurseData = this.props.allNurses.find((nurse) => {
       return nurse.rn_Id === this.state.active_rn_Id;
     });
@@ -64,22 +65,23 @@ class LaunchPage extends Component {
         startingRNCoords_lng: selectedNurseData.rnOfficeLng,
       });
     }
-    this.props.sendNurseStartingCoords(this.state.startingRNCoords_lng, this.state.startingRNCoords_lat, this.state.startingLocation);
+    setTimeout(() => {
+      this.props.sendNurseStartingCoords(
+        this.state.startingRNCoords_lng,
+        this.state.startingRNCoords_lat,
+        this.state.startingLocation
+      );
+    }, 10);
   };
   // Handler for "click to load patients"
   nurseAndLocationClickHandler = () => {
     // Make sure active_rn_Id is an interger
     let integer_rn_Id = parseInt(this.state.active_rn_Id);
     // Fetch points for the nurse's patients - add to props
-    this.props.fetchPatientPoints(integer_rn_Id); 
+    this.props.fetchPatientPoints(integer_rn_Id);
     // Fetch patients for the active nurse
-    this.props.fetchNurseById(
-      this.state.active_rn_Id)
-    
-    setTimeout(() => {
-      console.log(this.props.nurseCoords)
-    }, 3000);
-    debugger;
+    this.props.fetchNurseById(this.state.active_rn_Id);
+
     // Route to the map and table
     this.props.history.push("/app");
   };
@@ -145,13 +147,18 @@ function mapStateToProps(state) {
     allNurses: state.allNurses,
     patientData: state.patientData,
     oneNurseById: state.oneNurseById,
-    nurseCoords: state.nurseCoords
+    nurseCoords: state.nurseCoords,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
-    { fetchAllNurses, fetchPatientPoints, fetchNurseById, sendNurseStartingCoords },
+    {
+      fetchAllNurses,
+      fetchPatientPoints,
+      fetchNurseById,
+      sendNurseStartingCoords,
+    },
     dispatch
   );
 }
